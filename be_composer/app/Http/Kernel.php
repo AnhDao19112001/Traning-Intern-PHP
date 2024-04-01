@@ -7,9 +7,9 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     /**
-     * The application's global HTTP middleware stack.
+     * Ngăn xếp phần mềm trung gian HTTP toàn cầu của ứng dụng.
      *
-     * These middleware are run during every request to your application.
+     * Các phần mềm trung gian này được chạy trong mọi yêu cầu gửi tới ứng dụng của bạn.
      *
      * @var array<int, class-string|string>
      */
@@ -24,7 +24,7 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's route middleware groups.
+     * Các nhóm phần mềm trung gian định tuyến của ứng dụng.
      *
      * @var array<string, array<int, class-string|string>>
      */
@@ -46,9 +46,9 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's middleware aliases.
+     * Bí danh phần mềm trung gian của ứng dụng.
      *
-     * Aliases may be used instead of class names to conveniently assign middleware to routes and groups.
+     * Bí danh có thể được sử dụng thay cho tên lớp để gán phần mềm trung gian cho các tuyến và nhóm một cách thuận tiện.
      *
      * @var array<string, class-string|string>
      */

@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| Đây là nơi bạn có thể đăng ký các tuyến web cho ứng dụng của mình. Những cái này
+| các tuyến đường được tải bởi RouteServiceProvider và tất cả chúng sẽ
+| được gán vào nhóm phần mềm trung gian "web". Hãy làm điều gì đó tuyệt vời!
 |
 */
 

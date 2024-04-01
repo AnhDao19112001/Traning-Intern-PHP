@@ -5,9 +5,9 @@
 | Create The Application
 |--------------------------------------------------------------------------
 |
-| The first thing we will do is create a new Laravel application instance
-| which serves as the "glue" for all the components of Laravel, and is
-| the IoC container for the system binding all of the various parts.
+| Điều đầu tiên chúng ta sẽ làm là tạo một phiên bản ứng dụng Laravel mới
+| đóng vai trò là "chất keo" cho tất cả các thành phần của Laravel và là
+| bộ chứa IoC để hệ thống liên kết tất cả các bộ phận khác nhau.
 |
 */
 
@@ -17,12 +17,12 @@ $app = new Illuminate\Foundation\Application(
 
 /*
 |--------------------------------------------------------------------------
-| Bind Important Interfaces
+| Ràng buộc các giao diện quan trọng
 |--------------------------------------------------------------------------
 |
-| Next, we need to bind some important interfaces into the container so
-| we will be able to resolve them when needed. The kernels serve the
-| incoming requests to this application from both the web and CLI.
+| Tiếp theo, chúng ta cần liên kết một số giao diện quan trọng vào vùng chứa để
+| chúng ta sẽ có thể giải quyết chúng khi cần thiết. Hạt nhân phục vụ cho
+| các yêu cầu gửi đến ứng dụng này từ cả web và CLI.
 |
 */
 
@@ -46,9 +46,9 @@ $app->singleton(
 | Return The Application
 |--------------------------------------------------------------------------
 |
-| This script returns the application instance. The instance is given to
-| the calling script so we can separate the building of the instances
-| from the actual running of the application and sending responses.
+| Tập lệnh này trả về phiên bản ứng dụng. Ví dụ được đưa ra cho
+| tập lệnh gọi để chúng tôi có thể tách biệt việc xây dựng các phiên bản
+| từ việc chạy ứng dụng thực tế và gửi phản hồi.
 |
 */
 
