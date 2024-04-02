@@ -4,16 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $todo = Todo::all();
-        return response()->json($todo);
+        $findByName =$request->input('findByName');
+        $sortBy = $request->input('sortBy') ?? 'name_todo';
+        $sortOder = $request->input('sortOrder') ?? 'asc';
+        $todo = Todo::where('name_todo','like','%' . $findByName . '%')
+        -> orderBy($sortBy,$sortOder)->get();
+        Log::info('Danh sách todo: ' . $todo);
+        return response() -> json($todo);
     }
 
     /**
