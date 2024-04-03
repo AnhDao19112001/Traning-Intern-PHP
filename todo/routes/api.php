@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\TypeStatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,5 @@ Route::post('/createTodo',[TodoController::class,'store']);
 Route::delete('/delete/{id}',[TodoController::class,'destroy']);
 Route::get('/getByID/{id}',[TodoController::class,'id']);
 Route::patch('/update/{id}',[TodoController::class,'update']);
+
+Route::get('/type',[TypeStatusController::class,'indexStatus']);

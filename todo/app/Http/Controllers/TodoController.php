@@ -4,20 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TodoController extends Controller
 {
     // hiển thị danh sách todo app
+    // public function index(Request $request)
+    // {
+    //     $findByName = $request->input('findByName');
+    //     $sortBy = $request->input('sortBy') ?? 'name';
+    //     $sortOrder = $request->input('sortOrder') ?? 'asc';
+    //     $todo = Todo::where('name','like','%' . $findByName . '%')
+    //             -> where('deleted',true)
+    //             -> orderBy($sortBy,$sortOrder)->get();
+    //             return response()->json($todo);
+    // }
+
+    // show to-do list join to-do board with status
     public function index(Request $request)
-    {
-        $findByName = $request->input('findByName');
-        $sortBy = $request->input('sortBy') ?? 'name';
-        $sortOrder = $request->input('sortOrder') ?? 'asc';
-        $todo = Todo::where('name','like','%' . $findByName . '%')
-                -> where('deleted',true)
-                -> orderBy($sortBy,$sortOrder)->get();
-                return response()->json($todo);
-    }
+{
+    $findByName = $request->input('findByName');
+    $sortBy = $request->input('sortBy') ?? 'name';
+    $sortOrder = $request->input('sortOrder') ?? 'asc';
+    $todos = Todo::select('todos.name', 'todos.description', DB::raw('COALESCE(type_statuses.type, "Not yet started") as type_name'))
+    ->leftJoin('type_statuses', 'todos.id', '=', 'type_statuses.id')
+    ->where('todos.name', 'like', '%' . $findByName . '%')
+    ->where('todos.deleted', true)
+    ->orderBy($sortBy, $sortOrder)
+    ->get();
+    return response()->json($todos);
+}
 
     // thêm mới todo
     public function store(Request $request) 
