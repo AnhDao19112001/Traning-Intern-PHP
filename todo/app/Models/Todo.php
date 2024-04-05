@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Todo extends Model
 {
@@ -21,8 +20,8 @@ class Todo extends Model
     ];
     protected $primaryKey = 'id';
     public $timestamps = false;
-    public function typeStatus(): HasMany
+    public function typeStatus()
     {
-        return $this->hasMany(TypeStatus::class, 'id');
+        return $this->belongsTo(TypeStatus::class, 'status_id');
     }
 };

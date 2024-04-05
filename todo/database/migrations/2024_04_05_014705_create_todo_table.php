@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('day');
             $table->string('description');
             $table->boolean('deleted')->default(true);
+            $table->unsignedBigInteger('status_id');
+            $table->foreign('status_id')->references('id')->on('type_statuses');
         });
     }
 

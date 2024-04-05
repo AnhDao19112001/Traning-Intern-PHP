@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\TypeStatus;
-use Illuminate\Http\Request;
 
 class TypeStatusController extends Controller
 {
