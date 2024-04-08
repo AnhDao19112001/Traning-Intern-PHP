@@ -103,33 +103,6 @@ const toggleModal = () => setModal(!modal);
       }
   };
 
-// --------------- Status Todo App --------------- //
-
-    // const handleStatus = async (id) => {
-    //   try {
-    //     if (id) {
-    //       const todo = await todoService.findById(id);
-    //       if (todo) {
-    //         const updatedTodo = { ...todo, status: !todo.status };
-    //         await todoService.updateTodo(id, updatedTodo);
-    //         const updatedItems = currentItems.map(item => {
-    //           if (item.id === id) {
-    //             return { ...item, status: !item.status };
-    //           }
-    //           return item;
-    //         });
-    //         setCurrentItems(updatedItems);
-    //       } else {
-    //         throw new Error('Không tìm thấy công việc');
-    //       }
-    //     } else {
-    //       throw new Error('id không tồn tại');
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-
     return(
         <>
             <h1 className="text-center mt-2">Todo App</h1>

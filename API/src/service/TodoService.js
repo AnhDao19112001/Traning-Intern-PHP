@@ -1,12 +1,13 @@
 import axios from "axios";
 
-const createTodo = async (todo) => {
+const createTodo = async (values) => {
+    console.log(values);
     try {
-        const result = await axios.post(`http://localhost:8088/api/createTodo`,todo);
+        const result = await axios.post(`http://localhost:8088/api/createTodo`,values);
         console.log(result.data);
         return result.data;
     } catch (error) {
-        console.log("---------------"+error);   
+        console.log(error.result.data);   
     } 
 }
 
@@ -30,7 +31,7 @@ const search = async (findByName, sortBy, sortOrder) => {
 const findById = async (id) => {
     try {
         const result = await axios.get(`http://localhost:8088/api/getByID/${id}`);
-        console.log("--------------------"+result.data);
+        console.log(result.data);
         return result.data;
     } catch (error) {
         console.log(error);

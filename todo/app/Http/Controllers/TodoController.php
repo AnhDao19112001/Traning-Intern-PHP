@@ -25,22 +25,29 @@ class TodoController extends Controller
 }
 
     // thêm mới todo
-public function store(Request $request)
+    public function store(Request $request)
 {
-    $todoData = $request->input('todos');
+    $name = $request->input('name');
+    $time = $request->input('time');
+    $day = $request->input('day');
+    $description = $request->input('description');
+    $status_id = $request->input('status_id');
 
-    $result = DB::table('todos')->insert([
-        'name' => $todoData['name'],
-        'time' => $todoData['time'],
-        'day' => $todoData['day'],
-        'description' => $todoData['description'],
-        'status_id' => $todoData['status_id']
-    ]);
-
-    if ($result) {
-        return response()->json('Success');
+    if(isset($name) && isset($time) && isset($day) && isset($description) && isset($status_id)) {
+        $result = DB::table('todos')->insert([
+            'name' => $name,
+            'time' => $time,
+            'day' => $day,
+            'description' => $description,
+            'status_id' => $status_id
+        ]);
+        if ($result) {
+            return response()->json('Success');
+        } else {
+            return response()->json('Failed to create todo', 500);
+        }
     } else {
-        return response()->json('Failed to create todo', 500);
+        return response()->json('Invalid data format', 400);
     }
 }
 

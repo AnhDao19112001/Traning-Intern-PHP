@@ -12,7 +12,6 @@ function CreateTodoApp() {
         const result = await todoService.typeStatus();
         setTypeStatus(result);
     }
-
     useEffect(() => {
         getTypeStatus();
     },[])
@@ -24,10 +23,7 @@ function CreateTodoApp() {
                 time: "",
                 day: "",
                 description: "",
-                status_id: "",
-                type_status: {
-                    type: ""
-                }
+                status_id: 4,
             }} 
             validationSchema={yup.object({
             name: yup.string()
@@ -42,19 +38,26 @@ function CreateTodoApp() {
             .matches(/^[0-9+.]+$/,"Không chứa ký tự đặc biệt!"),
             description: yup.string()
             .required("Không được để trống phần mô tả!"),
-            status_id: yup.string().required("không để trống!")
             })}
-            onSubmit={async (values) => {
-                await todoService.createTodo(values);
-                Swal.fire({
-                    title: 'Create '+values.name+' success',
-                    icon: 'success'
-                })
-                navigate('/')
-            }}
-        >
-            {({handleSubmit, handleChange, values }) => (
-                <form onSubmit={handleSubmit}>
+            onSubmit={async (values, { setSubmitting }) => {
+                try {
+                    await todoService.createTodo(values);
+                    setSubmitting(false);
+                    Swal.fire({
+                        title: 'Create ' + values.name + ' success',
+                        icon: 'success'
+                    });
+                    navigate('/');
+                } catch (error) {
+                    Swal.fire({
+                        title: 'Create ' + values.name + ' fail',
+                        icon: "error"
+                    });
+                    setSubmitting(false);
+                }
+            }}>              
+            {({handleSubmit}) => (
+                <form >
                     <div className="container mt-5">
                         <div className="row">
                             <div className="col-md-6 offset-md-3">
@@ -144,7 +147,7 @@ function CreateTodoApp() {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="status_id">Status</label>
-                                        <Field as="select" className="form-select" value={values.status_id} name="status_id" onChange={handleChange}>
+                                        <Field as="select" className="form-select" name="status_id">
                                             <option value="" disabled>Select Status</option>
                                             {typeStatus.map((value) => (
                                                 <option key={value.id} value={value.id}>
@@ -159,8 +162,7 @@ function CreateTodoApp() {
                                             type="button"
                                             onClick={handleSubmit}
                                             className="btn btn-outline-primary col-1 float-end" 
-                                            style={{ width: "auto" }}
-                                        >
+                                            style={{ width: "auto" }}>
                                             Save
                                         </button>
                                     </div>
