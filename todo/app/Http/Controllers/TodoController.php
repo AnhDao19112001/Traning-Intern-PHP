@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-// use App\Models\TypeStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -70,22 +69,22 @@ class TodoController extends Controller
         return response()->json($todo);
     }
     // Update todo App
-public function update(Request $request, $id)
-{
-    $todo = Todo::find($id);
+    public function update(Request $request, $id)
+    {
+        $todo = Todo::find($id);
 
-    if (!$todo) {
-        return response()->json('Todo not found', 404);
+        if (!$todo) {
+            return response()->json('Todo not found', 404);
+        }
+        if ($request->has('status_id')) {
+            $todo->status_id = $request->get('status_id');
+        }
+        $todo->name = $request->get('name');
+        $todo->time = $request->get('time');
+        $todo->day = $request->get('day');
+        $todo->description = $request->get('description');
+        $todo->save(); 
+        return response()->json('Update todo success!');
     }
-    if ($request->has('status_id')) {
-        $todo->status_id = $request->get('status_id');
-    }
-    $todo->name = $request->get('name');
-    $todo->time = $request->get('time');
-    $todo->day = $request->get('day');
-    $todo->description = $request->get('description');
-    $todo->save(); 
-    return response()->json('Update todo success!');
-}
 
 }

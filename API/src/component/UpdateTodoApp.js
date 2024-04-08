@@ -62,9 +62,7 @@ function UpdateTodoApp() {
                 title: `Update ${value.name} success`,
                 icon: "success"
             })
-            navigate(`/`)
-        }}
-        >
+            navigate(`/`)}}>
             {({handleSubmit, handleChange, values}) => (
                 <form onSubmit={handleSubmit}>
                     <div className="container mt-5">
