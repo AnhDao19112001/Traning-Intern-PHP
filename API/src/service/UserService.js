@@ -3,7 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 export const login = async (users) => {
     try {
         const result = await axios.post(`http://localhost:8088/api/login`,users);
-        return result.data;
+        return result;
     } catch (error) {
         console.log(error);
     }
@@ -12,7 +12,7 @@ export const registerUser = async (users) => {
     try {
         const result = await axios.post(`http://localhost:8088/api/register`,users);
         console.log(result);
-        return result.data;
+        return result;
     } catch (error) {
         console.log(error);
     }

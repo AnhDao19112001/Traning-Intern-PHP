@@ -27,6 +27,17 @@ Route::controller(AuthController::class)->group(function() {
     Route::get('/findId/{id}','id');
 });
 
+// Route::group([
+//     'middleware' => 'api',
+//     'prefix' => 'auth'
+// ], function ($router) {
+    // Route::post('/login', [AuthController::class, 'login']);
+    // Route::post('/register', [AuthController::class, 'register']);
+    // Route::post('/logout', [AuthController::class, 'logout']);
+    // Route::post('/refresh', [AuthController::class, 'refresh']);
+    // Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+// });
+
 Route::get('/todoList',[TodoController::class,'index']);
 Route::post('/createTodo',[TodoController::class,'store']);
 Route::delete('/delete/{id}',[TodoController::class,'destroy']);

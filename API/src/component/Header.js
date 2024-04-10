@@ -4,15 +4,16 @@ import { NavLink,Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { BiLogOutCircle, BiUserCircle} from "react-icons/bi";
+import Swal from 'sweetalert2';
 const Header = ({inputSearch,onInputChange}) => {
     const[JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
-    const [userName,setUserName] = useState("");
+    const [name,setName] = useState("");
     const [userId, setUserId] = useState("");
     const [nameTodo, setNameTodo] = useState("");
     const navigate = useNavigate()
     const getUserName = async () => {
         const result = userService.infoAppUserByJwtToken();
-        setUserName(result);
+        setName(result);
     }
     const getUserId = async () => {
         const isLoggedIn = userService.infoAppUserByJwtToken();
@@ -35,6 +36,20 @@ const Header = ({inputSearch,onInputChange}) => {
         event.preventDefault();
         handleTodo(nameTodo)
     }
+    
+    const logout = () => {
+        localStorage.removeItem("JWT");
+        setJwtToken(undefined);
+        setName(undefined);
+        navigate('/');
+        Swal.fire({
+            title: 'Đẵng xuất thành công!',
+            icon: 'success'
+        });
+        navigate('/')
+        window.location.reload();
+    }
+
     return(
         <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
@@ -86,13 +101,14 @@ const Header = ({inputSearch,onInputChange}) => {
                                 alt="user-img"
                                 className="user-img"
                             />
-                            {!userName ? (
+                            {!name ? (
                                 <Link to="/login">
                                     <span className="user-info">Đăng nhập</span>
                                 </Link>
                             ) : (
                                 <span className="user-info" style={{ overflow: "hidden" }}>
-                      {userName.sub}
+                      {name.sub}
+                      console.log(name);
                     </span>
                             )}
 
@@ -110,10 +126,7 @@ const Header = ({inputSearch,onInputChange}) => {
                                             <BiLogOutCircle className="me-3 ms-0" size={25} />
                                             <div
                                                 className="dropdown-text"
-                                                // onClick={() => {
-                                                //     handleLogout();
-                                                // }}
-                                            >
+                                                onClick={() => {logout()}}>
                                                 Đăng xuất
                                             </div>
                                         </Link>

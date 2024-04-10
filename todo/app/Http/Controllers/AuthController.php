@@ -4,73 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
-        // dd ($request->all());
-        $validate = Validator::make($request->all(),[
-            'name' => 'required|string|max:250',
-            'email' => 'required|string|email:rfc,dns|max:250|unique:users,email',
-            'password' => 'required|string|min:8|confirmed'
+    public function __construct()
+    {
+      $this->middleware('auth:api',['except' => ['login', 'register']]);  
+    }
+
+    public function register(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|between:2,100',
+            'email' => 'required|string|email|max:100|unique:users',
+            'password' => 'required|string|confirmed|min:6',
         ]);
-        if($validate->fails()){
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Validation Error!',
-                'data' => $validate->errors(),
-            ], 403);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
         }
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
-        $data['token'] = $user->createToken($request->email)->accessToken;
-        $data['user'] = $user;
-        $response = [
-            'status' => 'success',
-            'message' => 'User is created successfully.',
-            'data' => $data,
-        ];
-        return response()->json($response, 201);
+        $user = User::create(array_merge(
+                    $validator->validated(),
+                    ['password' => bcrypt($request->password)]
+                ));
+        return response()->json([
+            'message' => 'User successfully registered',
+            'user' => $user
+        ], 201);
     }
 
     public function login(Request $request){
-        $validate = Validator::make($request->all(),[
-            'email' => 'required|string|email',
-            'password' => 'required|string'
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
         ]);
-        if($validate->fails()){
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Validate error',
-                'data' => $validate->errors(),
-            ],403);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
-        // kiểm tra email có tồn tại chưa
-        $user = User::where('email',$request->email)->first();
-        // kiểm tra password
-        if(!$user || !Hash::check($request->password,$user->password)){
-            return response()->json([
-                'status'=>'failse',
-                'message' => 'Validate pass errors'
-            ],401);
+    
+        $credentials = $request->only('email', 'password');
+        if (! $token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        $data['token'] = $user->createToken($request->email)->accessToken;
-        $data['user'] = $user;
-        $response = [
-            'status' => 'success',
-            'message' => 'Login successfuly',
-            'data' => $data,
-        ];
-        return response()->json($response,200);
+    
+        $user = JWTAuth::user();
+        return response()->json(compact('token', 'user'));
     }
-    public function id($id)
-    {
-        $users = User::find($id);
-        return response()->json($users);
-    }
+
+
 }

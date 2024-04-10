@@ -122,7 +122,7 @@ function getStatusColor (status_id) {
 
     return(
         <>
-        {/* <Header onInputChange={() => {}}/> */}
+        <Header onInputChange={() => {}}/>
             <h1 className="text-center mt-2">Todo App</h1>
             <div className="header-right mx-5 mt-4 mb-4 d-flex align-items-center justify-content-end">
               <Formik
