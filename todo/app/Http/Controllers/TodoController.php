@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,12 +12,15 @@ class TodoController extends Controller
     public function index(Request $request)
 {
     $findByName = $request->input('findByName');
-    $sortBy = $request->input('sortBy') ?? 'name';
-    $sortOrder = $request->input('sortOrder') ?? 'asc';
+    $sortBy = $request->input('sortBy') ?? 'id';
+    $sortOrder = $request->input('sortOrder') ?? 'desc';
+    $userId = Auth::id();
     $todos = Todo::select('todos.id','todos.name', 'todos.description','type_statuses.type as type')
     ->leftJoin('type_statuses', 'type_statuses.id', '=', 'todos.status_id')
+    ->leftJoin('users', 'users.id','=','todos.user_id')
     ->where('todos.name', 'like', '%' . $findByName . '%')
     ->where('todos.deleted', true)
+    ->where('todos.user_id',$userId)
     ->orderBy($sortBy, $sortOrder)
     ->get();
     return response()->json($todos);
@@ -62,12 +65,14 @@ class TodoController extends Controller
             return response()->json('Delete fail');
         }
     }
+
     // Find by id
     public function id($id)
     {
         $todo = Todo::with('typeStatus')->find($id);
         return response()->json($todo);
     }
+
     // Update todo App
     public function update(Request $request, $id)
     {
@@ -76,9 +81,11 @@ class TodoController extends Controller
         if (!$todo) {
             return response()->json('Todo not found', 404);
         }
+
         if ($request->has('status_id')) {
             $todo->status_id = $request->get('status_id');
         }
+        
         $todo->name = $request->get('name');
         $todo->time = $request->get('time');
         $todo->day = $request->get('day');

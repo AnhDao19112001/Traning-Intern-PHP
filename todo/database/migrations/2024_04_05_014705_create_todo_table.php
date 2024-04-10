@@ -20,6 +20,8 @@ return new class extends Migration
             $table->boolean('deleted')->default(true);
             $table->unsignedBigInteger('status_id');
             $table->foreign('status_id')->references('id')->on('type_statuses');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

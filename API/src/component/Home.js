@@ -3,16 +3,18 @@ import { NavLink } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { CiSearch } from "react-icons/ci";
 import todoService from "../service/TodoService";
+import Header from "./Header";
 import "../css/search.css";
 import"../css/pagination.css";
 import { Formik, Form, Field } from "formik";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { FaBoxArchive } from "react-icons/fa6";
 import Swal from "sweetalert2";
 function Home() {
     const [currentItems, setCurrentItems] = useState([]);
     const [findByName, setFindByName] = useState("")
-    const [sortBy, setSortBy] = useState("name");
-    const [sortOrder, setSortOrder] = useState("asc");
+    const [sortBy, setSortBy] = useState("id"); 
+    const [sortOrder, setSortOrder] = useState("desc");
     const [todoList, setTodoList] = useState([]);
     const [pageCount, setPageCount] = useState(0);
     const [itemOffset, setItemOffset] = useState(0);
@@ -103,8 +105,24 @@ const toggleModal = () => setModal(!modal);
       }
   };
 
+// --------------- Status --------------- //
+
+function getStatusColor (status_id) {
+  switch(status_id) {
+    case 1:
+      return "green";
+    case 2:
+      return "yellow";
+    case 3:   
+      return "red";
+    default:
+      return "white"
+  }
+}
+
     return(
         <>
+        {/* <Header onInputChange={() => {}}/> */}
             <h1 className="text-center mt-2">Todo App</h1>
             <div className="header-right mx-5 mt-4 mb-4 d-flex align-items-center justify-content-end">
               <Formik
@@ -124,7 +142,7 @@ const toggleModal = () => setModal(!modal);
               </Formik>
               <div className="col-auto me-2">
                   <select className="form-select" onChange={(event) => setSortBy(event.target.value)}>
-                    <option value="">Sắp xếp theo</option>
+                    <option value="id">Sắp xếp theo</option>
                     <option value="name">Name</option>
                     <option value="time">Time</option>
                     <option value="day">Day</option>
@@ -132,8 +150,8 @@ const toggleModal = () => setModal(!modal);
               </div>
               <div className="col-auto me-2">
                   <select className="form-select" onChange={(event) => setSortOrder(event.target.value)}>
-                    <option value="asc">Giảm gần</option>
-                    <option value="desc">Tăng dần</option>
+                    <option value="desc">Giảm gần</option>
+                    <option value="asc">Tăng dần</option>
                   </select>
               </div>
           <NavLink to={`/createTodo`} className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}}>Add Todo</NavLink>
@@ -145,19 +163,31 @@ const toggleModal = () => setModal(!modal);
                 <th scope="col">NO</th>
                 <th scope="col">Todo</th>
                 <th scope="col">Description</th>
+                <th scope="col">Status</th>
                 <th scope="col">Function</th>
               </tr>
             </thead>
             <tbody className="text-center">
               {
                 currentItems.map((value, key) => (
-                  <tr key={key.id} scope="row">
+                  <tr key={key.id} scope="row" style={{ color: getStatusColor(value.status_id) }}>
                     <th scope="row">{++stt}</th>
                     <td><NavLink to={`/getByID/${value.id}`}>{value.name}</NavLink></td>
                     <td>{value.description}</td>
                     <td>
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      defaultValue=""
+                      id="flexCheckDefault"
+                    />
+                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                    </label>
+                    </td>
+                    <td>
                       <NavLink to={`/update/${value.id}`} className={"btn btn-outline-warning mx-2"}>Update</NavLink>
                       <Button outline color="danger" className="btn btn-outline-modal" onClick={() => deleteTodoApp(value)}>Delete</Button>
+                      {/* <FaBoxArchive /> */}
                     </td>
                   </tr>
                 ))

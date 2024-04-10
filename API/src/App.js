@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import CreateTodoApp from './component/CreateTodoApp';
 import UpdateTodoApp from './component/UpdateTodoApp';
 import DetailTodoApp from './component/DetailTodoApp';
+import Login from './component/Login';
+import Register from './component/Register';
 function App() {
   return (
     <Routes>
@@ -12,6 +14,8 @@ function App() {
       <Route path= {`/createTodo`} element={<CreateTodoApp/>} />
       <Route path= {`/update/:id`} element={<UpdateTodoApp/>} />
       <Route path= {`/getByID/:id`} element={<DetailTodoApp/>} />
+      <Route path= {`/login`} element={<Login/>} />
+      <Route path= {`/register`} element={<Register/>} />
     </Routes>
   );
 }
