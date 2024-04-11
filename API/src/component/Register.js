@@ -54,7 +54,6 @@ function Register() {
          })}
          onSubmit={(values, {setSubmitting, setErrors}) => {
             setSubmitting(false);
-            console.log(values);
             registerUser(values, setErrors)
         }}>
             <Form>

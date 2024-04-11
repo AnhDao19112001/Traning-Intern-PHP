@@ -29,7 +29,36 @@ class TodoController extends Controller
     return response()->json($todos);
 }
 
+    // những việc đã done
+
+    public function fillter()
+{
+    $userId = Auth::id();
+    $doneStatusId = TypeStatus::where('type','done')->value('id');
+    $todos = Todo::select('todos.id','todos.name', 'todos.description','type_statuses.type as type')
+    ->leftJoin('type_statuses', 'type_statuses.id', '=', 'todos.status_id')
+    ->leftJoin('users', 'users.id','=','todos.user_id')
+    ->where('todos.user_id',$userId)
+    ->where('todos.status_id',"=",$doneStatusId)
+    ->get();
+    return response()->json($todos);
+}
+
+    // lưu trữ todo
+
+    public function archive(){
+    $userId = Auth::id();
+    $todos = Todo::select('todos.id','todos.name', 'todos.description','type_statuses.type as type')
+    ->leftJoin('type_statuses', 'type_statuses.id', '=', 'todos.status_id')
+    ->leftJoin('users', 'users.id','=','todos.user_id')
+    ->where('todos.deleted',false)
+    ->where('todos.user_id',$userId)
+    ->get();
+    return response()->json($todos);
+    }
+
     // thêm mới todo
+
     public function store(Request $request)
 {
     $name = $request->input('name');
@@ -37,14 +66,15 @@ class TodoController extends Controller
     $day = $request->input('day');
     $description = $request->input('description');
     $status_id = $request->input('status_id');
-
+    $user_id = Auth::id();
     if(isset($name) && isset($time) && isset($day) && isset($description) && isset($status_id)) {
         $result = DB::table('todos')->insert([
             'name' => $name,
             'time' => $time,
             'day' => $day,
             'description' => $description,
-            'status_id' => $status_id
+            'status_id' => $status_id,
+            'user_id' => $user_id
         ]);
         if ($result) {
             return response()->json('Success');
@@ -57,45 +87,53 @@ class TodoController extends Controller
 }
 
     // xóa todo app
+
     public function destroy($id)
-    {
-        $todo = Todo::find($id);
-        if($todo) {
-            $todo->deleted = false;
-            $todo->save();
-            return response()->json('delete todo success');
-        } else {
-            return response()->json('Delete fail');
-        }
+{
+    $todo = Todo::where('user_id', Auth::id())->find($id); // Chỉ lấy todo của người dùng đăng nhập
+    if($todo) {
+        $todo->deleted = false;
+        $todo->save();
+        return response()->json('Delete todo success');
+    } else {
+        return response()->json('Delete fail', 404); // Trả về lỗi 404 nếu không tìm thấy hoặc không phải của người dùng
     }
+}
 
     // Find by id
+ 
     public function id($id)
     {
-        $todo = Todo::with('typeStatus')->find($id);
-        return response()->json($todo);
-    }
-
-    // Update todo App
-    public function update(Request $request, $id)
-    {
-        $todo = Todo::find($id);
-
-        if (!$todo) {
+        $todo = Todo::where('user_id', Auth::id())->find($id); // Chỉ lấy todo của người dùng đăng nhập
+        if ($todo) {
+            return response()->json($todo);
+        } else {
             return response()->json('Todo not found', 404);
         }
-
-        if ($request->has('status_id')) {
-            $todo->status_id = $request->get('status_id');
-        }
-        
-        $todo->name = $request->get('name');
-        $todo->time = $request->get('time');
-        $todo->day = $request->get('day');
-        $todo->description = $request->get('description');
-        $todo->save(); 
-        return response()->json('Update todo success!');
     }
+    
+    // Update todo App
+
+    public function update(Request $request, $id)
+{
+    $todo = Todo::where('user_id', Auth::id())->find($id); // Chỉ lấy todo của người dùng đăng nhập
+
+    if (!$todo) {
+        return response()->json('Todo not found', 404);
+    }
+
+    if ($request->has('status_id')) {
+        $todo->status_id = $request->get('status_id');
+    }
+    
+    $todo->name = $request->get('name');
+    $todo->time = $request->get('time');
+    $todo->day = $request->get('day');
+    $todo->description = $request->get('description');
+    $todo->save(); 
+    return response()->json('Update todo success!');
+}
+
 
     public function status(){
         

@@ -22,6 +22,7 @@ const getUserId = async () => {
     const jwtToken = localStorage.getItem("JWT");
     if (jwtToken) {
         const id = await userService.getIdByUserName(jwtToken);
+        console.log(id);
         setUserId(id);
     }
 }

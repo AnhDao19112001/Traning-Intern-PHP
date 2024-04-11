@@ -19,7 +19,6 @@ export const login = async (users) => {
 export const registerUser = async (users) => {
     try {
         const result = await axios.post(`http://localhost:8088/api/register`,users);
-        console.log(result);
         return result;
     } catch (error) {
         console.log(error);
@@ -28,7 +27,6 @@ export const registerUser = async (users) => {
 
 export const addJwtTokenToLocalStorage = (jwtToken) => {
     localStorage.setItem("JWT", jwtToken);
-    console.log("JWT token added to local storage:", jwtToken);
 }
 
 export const infoAppUserByJwtToken = () => {
@@ -47,10 +45,9 @@ export const getIdByUserName = async (jwtToken) => {
     try {
         const result = await axios.get(`http://localhost:8088/api/get-me`,{
             headers: {
-                Authorization: `Bearer ${jwtToken}`
+                'Authorization': `Bearer ${jwtToken}`
             }
         });
-        console.log(result);
     return result.data;
     } catch (error) {
         console.log(error);

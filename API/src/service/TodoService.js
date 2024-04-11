@@ -1,37 +1,44 @@
 import axios from "axios";
 
 const createTodo = async (values) => {
-    console.log(values);
     try {
         const result = await axios.post(`http://localhost:8088/api/createTodo`,values);
-        console.log(result.data);
         return result.data;
     } catch (error) {
         console.log(error.result.data);   
     } 
 }
 
-const search = async (findByName, sortBy, sortOrder) => {
+const search = async (findByName, sortBy, sortOrder, jwtToken) => {
     try {
         const result = await axios.get(`http://localhost:8088/api/todoList`, {
             params: {
                 findByName: findByName,
                 sortBy: sortBy,
                 sortOrder: sortOrder
+            },
+            headers: {
+                'Authorization': `Bear ${jwtToken}`
             }
         });
-        console.log(result.data);
+        return result.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const getArchive = async () => {
+    try {
+        const result = await axios.get(`http://localhost:8088/api/archive`);
         return result.data;
     } catch (error) {
         console.log(error);
-        throw error;
     }
 }
 
 const findById = async (id) => {
     try {
         const result = await axios.get(`http://localhost:8088/api/getByID/${id}`);
-        console.log(result.data);
         return result.data;
     } catch (error) {
         console.log(error);
@@ -68,7 +75,6 @@ const changeStatusTodo = async (id) => {
 const typeStatus = async () => {
     try {
         const result = await axios.get(`http://localhost:8088/api/type`);
-        console.log(result.data);
         return result.data;
     } catch (error) {
         console.log(error);
@@ -82,6 +88,7 @@ const todoService = {
     deleteTodo,
     search,
     changeStatusTodo,
-    typeStatus
+    typeStatus,
+    getArchive
 } 
 export default todoService;

@@ -18,7 +18,6 @@ function DetailTodoApp() {
 
     const getDetail = async () => {
         const result = await todoService.findById(param.id);
-        console.log(result);
         setTodo(result);
     } 
     useEffect(() => {

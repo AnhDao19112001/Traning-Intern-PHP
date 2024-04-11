@@ -11,7 +11,7 @@ function Login() {
         try {
             const response = await userService.login(values);
             const { data } = response;
-            const { token } = data; // Assuming the token is returned as 'token' in the response data
+            const { token } = data; 
             userService.addJwtTokenToLocalStorage(token);
 
             const tempURL = localStorage.getItem("tempURL");
@@ -25,7 +25,7 @@ function Login() {
         } catch (err) {
             Swal.fire({
                 icon: 'error',
-                title: err.response.data.error // Assuming the error message is in 'error' field of the response data
+                title: err.response.data.error
             });
             console.log(err);
         }

@@ -27,13 +27,9 @@ Route::controller(AuthController::class)->group(function() {
     Route::get('/get-me','getMe')->middleware('auth:api');
 });
 
-// Route::middleware('auth:api')->group(function() {
-//     Route::post('/register', 'AuthController@register');
-//     Route::post('/login', 'AuthController@login');
-//     Route::get('/findId/{userName}','[AuthController]@id')->middleware('auth:api');
-// });
-
+Route::get('/archive',[TodoController::class,'archive']);
 Route::get('/todoList',[TodoController::class,'index']);
+Route::get('/fillter',[TodoController::class,'fillter']);
 Route::post('/createTodo',[TodoController::class,'store']);
 Route::delete('/delete/{id}',[TodoController::class,'destroy']);
 Route::get('/getByID/{id}',[TodoController::class,'id']);

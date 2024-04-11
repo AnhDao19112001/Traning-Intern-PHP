@@ -201,7 +201,7 @@ function getStatusColor (status_id) {
                             <NavLink to={`/update/${value.id}`} className={"btn btn-outline-warning mx-2"}>Update</NavLink>
                           </DropdownItem>
                           <DropdownItem>
-                            <Button outline color="danger" className="btn btn-outline-modal mx-2" onClick={() => deleteTodoApp(value)}>Delete</Button>
+                            <Button outline color="danger" className="btn btn-outline-modal mx-2" onClick={() => deleteTodoApp(value)}>Archive</Button>
                           </DropdownItem>
                         </DropdownMenu>
                       </Dropdown>

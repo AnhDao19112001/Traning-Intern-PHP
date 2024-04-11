@@ -7,10 +7,12 @@ import UpdateTodoApp from './component/UpdateTodoApp';
 import DetailTodoApp from './component/DetailTodoApp';
 import Login from './component/Login';
 import Register from './component/Register';
+import Filter from './component/Filter';
 function App() {
   return (
     <Routes>
       <Route path= {`/`} element={<Home/>} />
+      <Route path= {`/fillter`} element={<Filter/>} />
       <Route path= {`/createTodo`} element={<CreateTodoApp/>} />
       <Route path= {`/update/:id`} element={<UpdateTodoApp/>} />
       <Route path= {`/getByID/:id`} element={<DetailTodoApp/>} />
