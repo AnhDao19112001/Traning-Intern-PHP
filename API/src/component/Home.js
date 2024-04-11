@@ -4,11 +4,12 @@ import ReactPaginate from "react-paginate";
 import { CiSearch } from "react-icons/ci";
 import todoService from "../service/TodoService";
 import Header from "./Header";
+import { BsThreeDots } from "react-icons/bs";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import "../css/search.css";
 import"../css/pagination.css";
 import { Formik, Form, Field } from "formik";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { FaBoxArchive } from "react-icons/fa6";
 import Swal from "sweetalert2";
 function Home() {
     const [currentItems, setCurrentItems] = useState([]);
@@ -20,6 +21,8 @@ function Home() {
     const [itemOffset, setItemOffset] = useState(0);
     const [todoObject, setTodoObject] = useState({});
     const [modal, setModal] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [selectedTodo, setSelectedTodo] = useState(null);
 
 // --------------- Pagination --------------- //
 
@@ -105,6 +108,11 @@ const toggleModal = () => setModal(!modal);
       }
   };
 
+  const toggleDropdown = (todo) => {
+    setDropdownOpen(!dropdownOpen);
+    setSelectedTodo(todo);
+  }
+
 // --------------- Status --------------- //
 
 function getStatusColor (status_id) {
@@ -123,7 +131,6 @@ function getStatusColor (status_id) {
     return(
         <>
         <Header onInputChange={() => {}}/>
-            <h1 className="text-center mt-2">Todo App</h1>
             <div className="header-right mx-5 mt-4 mb-4 d-flex align-items-center justify-content-end">
               <Formik
               initialValues={{findByName: "" }}
@@ -185,9 +192,19 @@ function getStatusColor (status_id) {
                     </label>
                     </td>
                     <td>
-                      <NavLink to={`/update/${value.id}`} className={"btn btn-outline-warning mx-2"}>Update</NavLink>
-                      <Button outline color="danger" className="btn btn-outline-modal" onClick={() => deleteTodoApp(value)}>Delete</Button>
-                      {/* <FaBoxArchive /> */}
+                      <Dropdown isOpen={selectedTodo === value && dropdownOpen} toggle={() => toggleDropdown(value)}>
+                        <DropdownToggle caret>
+                        <BsThreeDots />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem>
+                            <NavLink to={`/update/${value.id}`} className={"btn btn-outline-warning mx-2"}>Update</NavLink>
+                          </DropdownItem>
+                          <DropdownItem>
+                            <Button outline color="danger" className="btn btn-outline-modal mx-2" onClick={() => deleteTodoApp(value)}>Delete</Button>
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
                     </td>
                   </tr>
                 ))

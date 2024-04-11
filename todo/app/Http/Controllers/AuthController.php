@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -42,7 +41,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-    
+
         $credentials = $request->only('email', 'password');
         if (! $token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -52,5 +51,13 @@ class AuthController extends Controller
         return response()->json(compact('token', 'user'));
     }
 
+    public function id($name){
+        $user = User::where('name', $name)->first();
+        if ($user) {
+            return response()->json($user);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+    }
 
 }

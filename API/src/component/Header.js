@@ -7,29 +7,31 @@ import { BiLogOutCircle, BiUserCircle} from "react-icons/bi";
 import Swal from 'sweetalert2';
 const Header = ({inputSearch,onInputChange}) => {
     const[JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
-    const [name,setName] = useState("");
+    const [userName,setUserName] = useState("");
     const [userId, setUserId] = useState("");
     const [nameTodo, setNameTodo] = useState("");
     const navigate = useNavigate()
     const getUserName = async () => {
         const result = userService.infoAppUserByJwtToken();
-        setName(result);
+        setUserName(result);
     }
     const getUserId = async () => {
         const isLoggedIn = userService.infoAppUserByJwtToken();
         if (isLoggedIn) {
             const id = await userService.getIdByUserName(isLoggedIn.sub);
-            setUserId(id.data);
+            setUserId(id);
         }
     }
     useEffect(() => {
-        getUserName();
         getUserId()
+    },[])
+    useEffect(() => {
+        getUserName()
     },[])
     const handleInputChange = (event) => {
         setNameTodo(event.target.value);
     }
-    const handleTodo = (nameTodo) => {
+    const handleTodo = () => {
         navigate(`/`);
     }
     const handleSearch = (event) => {
@@ -40,7 +42,7 @@ const Header = ({inputSearch,onInputChange}) => {
     const logout = () => {
         localStorage.removeItem("JWT");
         setJwtToken(undefined);
-        setName(undefined);
+        setUserName(undefined);
         navigate('/');
         Swal.fire({
             title: 'Đẵng xuất thành công!',
@@ -78,22 +80,6 @@ const Header = ({inputSearch,onInputChange}) => {
                         </ul>
                     </div>
                     <div className="header-right col-lg-6 d-flex align-items-center justify-content-end">
-                        <form className="header-search-form for-des" style={{paddingRight: "5px"}}>
-                            <input
-                                type="search"
-                                id="form-input-home"
-                                className="form-input m-0"
-                                placeholder="Tìm kiếm..."
-                                value={inputSearch}
-                                onChange={(event) => {
-                                    handleInputChange(event);
-                                    onInputChange(event);
-                                }}
-                            />
-                            <button type="submit" onClick={(e) => handleSearch(e)}>
-                            <CiSearch/>
-                            </button>
-                        </form>
 
                         <a href="#" className="user">
                             <img
@@ -101,14 +87,13 @@ const Header = ({inputSearch,onInputChange}) => {
                                 alt="user-img"
                                 className="user-img"
                             />
-                            {!name ? (
+                            {!userName ? (
                                 <Link to="/login">
                                     <span className="user-info">Đăng nhập</span>
                                 </Link>
                             ) : (
                                 <span className="user-info" style={{ overflow: "hidden" }}>
-                      {name.sub}
-                      console.log(name);
+                      {userName.sub}
                     </span>
                             )}
 

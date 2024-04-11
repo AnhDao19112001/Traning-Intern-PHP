@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Todo;
+use App\Models\TypeStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,13 +15,15 @@ class TodoController extends Controller
     $findByName = $request->input('findByName');
     $sortBy = $request->input('sortBy') ?? 'id';
     $sortOrder = $request->input('sortOrder') ?? 'desc';
-    $userId = Auth::id();
+    // $userId = Auth::id();
+    $doneStatusId = TypeStatus::where('type','done')->value('id');
     $todos = Todo::select('todos.id','todos.name', 'todos.description','type_statuses.type as type')
     ->leftJoin('type_statuses', 'type_statuses.id', '=', 'todos.status_id')
     ->leftJoin('users', 'users.id','=','todos.user_id')
     ->where('todos.name', 'like', '%' . $findByName . '%')
     ->where('todos.deleted', true)
-    ->where('todos.user_id',$userId)
+    // ->where('todos.user_id',$userId)
+    ->where('todos.status_id',"!=",$doneStatusId)
     ->orderBy($sortBy, $sortOrder)
     ->get();
     return response()->json($todos);
