@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import * as userService from "../service/UserService";
 import { NavLink,Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { CiSearch } from "react-icons/ci";
 import { BiLogOutCircle, BiUserCircle} from "react-icons/bi";
 import Swal from 'sweetalert2';
 const Header = ({inputSearch,onInputChange}) => {
@@ -13,18 +12,29 @@ const Header = ({inputSearch,onInputChange}) => {
     const navigate = useNavigate()
     const getUserName = async () => {
         const result = userService.infoAppUserByJwtToken();
+        console.log(result);
         setUserName(result);
     }
+
     const getUserId = async () => {
-        const isLoggedIn = userService.infoAppUserByJwtToken();
-        if (isLoggedIn) {
-            const id = await userService.getIdByUserName(isLoggedIn.sub);
-            setUserId(id);
+        const jwtToken = localStorage.getItem("JWT");
+        if (jwtToken) {
+            const isLoggedIn = userService.infoAppUserByJwtToken(jwtToken);
+            if (isLoggedIn) {
+                const id = await userService.getIdByUserName(jwtToken, isLoggedIn.sub);
+                console.log(id);
+                setUserId(id);
+            }
         }
     }
+    
     useEffect(() => {
-        getUserId()
-    },[])
+        const jwtToken = localStorage.getItem("JWT");
+        if (jwtToken) {
+            getUserId(jwtToken);
+        }
+    }, [])
+
     useEffect(() => {
         getUserName()
     },[])

@@ -193,7 +193,7 @@ function getStatusColor (status_id) {
                     </td>
                     <td>
                       <Dropdown isOpen={selectedTodo === value && dropdownOpen} toggle={() => toggleDropdown(value)}>
-                        <DropdownToggle caret>
+                        <DropdownToggle >
                         <BsThreeDots />
                         </DropdownToggle>
                         <DropdownMenu>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -51,8 +52,8 @@ class AuthController extends Controller
         return response()->json(compact('token', 'user'));
     }
 
-    public function id($name){
-        $user = User::where('name', $name)->first();
+    public function getMe(){
+        $user = Auth::user();
         if ($user) {
             return response()->json($user);
         } else {

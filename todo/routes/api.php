@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function() {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
-    Route::get('/findId/{name}','id')->middleware('auth:api');
+    Route::get('/get-me','getMe')->middleware('auth:api');
 });
 
 // Route::middleware('auth:api')->group(function() {
