@@ -7,13 +7,16 @@ import { Link } from "react-router-dom";
 function Login() {
     const navigate = useNavigate();
 
-    const handleLogin = async (users) => {
+    const handleLogin = async (values) => {
         try {
-            const result = await userService.login(users);
-            console.log(result);
-            userService.addJwtTokenToLocalStorage(result.data.jwtToken)
+            const response = await userService.login(values);
+            const { data } = response;
+            const { token } = data; // Assuming the token is returned as 'token' in the response data
+            userService.addJwtTokenToLocalStorage(token);
+
             const tempURL = localStorage.getItem("tempURL");
             localStorage.removeItem("tempURL");
+            
             if (tempURL) {
                 navigate(tempURL);
             } else {
@@ -22,8 +25,8 @@ function Login() {
         } catch (err) {
             Swal.fire({
                 icon: 'error',
-                title: err.response.data
-            })
+                title: err.response.data.error // Assuming the error message is in 'error' field of the response data
+            });
             console.log(err);
         }
     }
@@ -34,12 +37,9 @@ function Login() {
             email: "",
             password: ""
          }}
-         onSubmit={(values, {setSubmitting}) => {
+         onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false);
-            let cloneValue = {
-                ...values,
-            }
-            handleLogin(cloneValue);
+            handleLogin(values);
         }}>
             <Form>
             <section className=" gradient-custom">

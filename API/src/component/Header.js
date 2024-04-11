@@ -5,62 +5,59 @@ import { useNavigate } from "react-router-dom";
 import { BiLogOutCircle, BiUserCircle} from "react-icons/bi";
 import Swal from 'sweetalert2';
 const Header = ({inputSearch,onInputChange}) => {
-    const[JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
-    const [userName,setUserName] = useState("");
+    const [JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
+    const [name, setName] = useState("");
     const [userId, setUserId] = useState("");
     const [nameTodo, setNameTodo] = useState("");
-    const navigate = useNavigate()
-    const getUserName = async () => {
-        const result = userService.infoAppUserByJwtToken();
-        console.log(result);
-        setUserName(result);
-    }
+    const navigate = useNavigate();
 
-    const getUserId = async () => {
-        const jwtToken = localStorage.getItem("JWT");
-        if (jwtToken) {
-            const isLoggedIn = userService.infoAppUserByJwtToken(jwtToken);
-            if (isLoggedIn) {
-                const id = await userService.getIdByUserName(jwtToken, isLoggedIn.sub);
-                console.log(id);
-                setUserId(id);
-            }
-        }
+useEffect(() => {
+    const userInfo = userService.infoAppUserByJwtToken();
+    if (userInfo) {
+        setName(userInfo.name); 
     }
-    
-    useEffect(() => {
-        const jwtToken = localStorage.getItem("JWT");
-        if (jwtToken) {
-            getUserId(jwtToken);
-        }
-    }, [])
+}, []);
 
-    useEffect(() => {
-        getUserName()
-    },[])
-    const handleInputChange = (event) => {
-        setNameTodo(event.target.value);
+const getUserId = async () => {
+    const jwtToken = localStorage.getItem("JWT");
+    if (jwtToken) {
+        const id = await userService.getIdByUserName(jwtToken);
+        setUserId(id);
     }
-    const handleTodo = () => {
-        navigate(`/`);
+}
+
+useEffect(() => {
+    const jwtToken = localStorage.getItem("JWT");
+    if (jwtToken) {
+        getUserId();
     }
-    const handleSearch = (event) => {
-        event.preventDefault();
-        handleTodo(nameTodo)
-    }
-    
-    const logout = () => {
-        localStorage.removeItem("JWT");
-        setJwtToken(undefined);
-        setUserName(undefined);
-        navigate('/');
-        Swal.fire({
-            title: 'Đẵng xuất thành công!',
-            icon: 'success'
-        });
-        navigate('/')
+}, []);
+
+const handleInputChange = (event) => {
+    setNameTodo(event.target.value);
+}
+
+const handleTodo = () => {
+    navigate(`/`);
+}
+
+const handleSearch = (event) => {
+    event.preventDefault();
+    handleTodo(nameTodo);
+}
+
+const logout = () => {
+    localStorage.removeItem("JWT");
+    setJwtToken(undefined);
+    setName("");
+    navigate('/');
+    Swal.fire({
+        title: 'Đăng xuất thành công!',
+        icon: 'success'
+    }).then(() => {
         window.location.reload();
-    }
+    });
+}
 
     return(
         <>
@@ -97,13 +94,13 @@ const Header = ({inputSearch,onInputChange}) => {
                                 alt="user-img"
                                 className="user-img"
                             />
-                            {!userName ? (
+                            {!name ? (
                                 <Link to="/login">
                                     <span className="user-info">Đăng nhập</span>
                                 </Link>
                             ) : (
                                 <span className="user-info" style={{ overflow: "hidden" }}>
-                      {userName.sub}
+                      {name}
                     </span>
                             )}
 
