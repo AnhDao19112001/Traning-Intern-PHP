@@ -34,5 +34,6 @@ Route::post('/createTodo',[TodoController::class,'store']);
 Route::delete('/delete/{id}',[TodoController::class,'destroy']);
 Route::get('/getByID/{id}',[TodoController::class,'id']);
 Route::patch('/update/{id}',[TodoController::class,'update']);
+Route::patch('/status/{id}',[TodoController::class,'status']);
 
 Route::get('/type',[TypeStatusController::class,'indexStatus']);

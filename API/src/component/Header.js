@@ -109,14 +109,6 @@ const logout = () => {
                             <div className="user-dropdown-list">
                                 {JwtToken ? (
                                     <>
-                                        <Link
-                                            to={`/findId/${userId}`}
-                                            className="user-dropdown-item"
-                                        >
-                                            <BiUserCircle className="me-3 ms-0" size={25} />
-                                            <div className="dropdown-text">Thông tin</div>
-                                        </Link>
-
                                         <Link to={`/fillter`}
                                         className="user-dropdown-item">
                                             <GrStatusGood className="me-3 ms-0" size={25} />

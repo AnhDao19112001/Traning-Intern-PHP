@@ -23,6 +23,7 @@ function Home() {
     const [modal, setModal] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedTodo, setSelectedTodo] = useState(null);
+    const [isCheckStatus, setIsCheckStatus] = useState(false);
 // --------------- Pagination --------------- //
 
     const itemsPerPage = 5;
@@ -66,6 +67,11 @@ const toggleModal = () => setModal(!modal);
     const deleteTodoApp = (obj) => {
         setTodoObject(obj);
         toggleModal();
+    }
+
+    const toggleDropdown = (todo) => {
+      setDropdownOpen(!dropdownOpen);
+      setSelectedTodo(todo);
     }
 
     const handleDelete = async (id) => {
@@ -116,10 +122,20 @@ const toggleModal = () => setModal(!modal);
       }
   };
 
-  const toggleDropdown = (todo) => {
-    setDropdownOpen(!dropdownOpen);
-    setSelectedTodo(todo);
+//--------------- Done / Undone status --------------- //
+
+const getStatus = async (id) => {
+  try {
+    setIsCheckStatus(!isCheckStatus);
+    const jwtToken = localStorage.getItem("JWT");
+    if (jwtToken) {
+      const result = await todoService.changeStatusTodo(id, jwtToken);
+      return result;
+    }
+  } catch (error) {
+    console.log(error);
   }
+}
 
     return(
         <>
@@ -175,15 +191,16 @@ const toggleModal = () => setModal(!modal);
                     <td><NavLink to={`/getByID/${value.id}`}>{value.name}</NavLink></td>
                     <td>{value.description}</td>
                     <td>
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      defaultValue=""
-                      id="flexCheckDefault"
-                    />
-                    <label className="form-check-label" htmlFor="flexCheckDefault">
-                    </label>
-                    </td>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              defaultValue=""
+              id="flexCheckDefault"
+              onChange={() => getStatus(value.id)} 
+            />
+            <label className="form-check-label" htmlFor="flexCheckDefault">
+            </label>
+          </td>
                     <td>
                       <Dropdown isOpen={selectedTodo === value && dropdownOpen} toggle={() => toggleDropdown(value)}>
                         <DropdownToggle >
@@ -192,9 +209,7 @@ const toggleModal = () => setModal(!modal);
                         <DropdownMenu>
                           <DropdownItem>
                             <NavLink to={`/update/${value.id}`} className={"btn btn-outline-warning mx-2"}>Update</NavLink>
-                          </DropdownItem>
-                          <DropdownItem>
-                            <Button outline color="danger" className="btn btn-outline-modal mx-2" onClick={() => deleteTodoApp(value)}>Archive</Button>
+                            <Button outline color="danger" className="btn btn-outline-modal" onClick={() => deleteTodoApp(value)}>Archive</Button>
                           </DropdownItem>
                         </DropdownMenu>
                       </Dropdown>

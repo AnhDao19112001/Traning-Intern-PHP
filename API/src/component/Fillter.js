@@ -34,7 +34,8 @@ function Filter() {
               <tr>
                 <th scope="col">Todo</th>
                 <th scope="col">Description</th>
-                <th scope="col">Status</th>
+                <th scope="col">Day</th>
+                <th scope="col">Time</th>
               </tr>
             </thead>
             <tbody className="text-center">
@@ -43,7 +44,8 @@ function Filter() {
                   <tr key={key.id} scope="row">
                     <td>{value.name}</td>
                     <td>{value.description}</td>
-                    <td>{value.type_status?.type}</td>
+                    <td>{value.day}</td>
+                    <td>{value.time}</td>
                   </tr>
                 ))
               }

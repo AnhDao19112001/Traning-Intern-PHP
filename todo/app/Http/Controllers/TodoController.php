@@ -35,7 +35,7 @@ class TodoController extends Controller
 {
     $userId = Auth::id();
     $doneStatusId = TypeStatus::where('type','done')->value('id');
-    $todos = Todo::select('todos.id','todos.name', 'todos.description','type_statuses.type as type')
+    $todos = Todo::select('todos.*','type_statuses.type as type')
     ->leftJoin('type_statuses', 'type_statuses.id', '=', 'todos.status_id')
     ->leftJoin('users', 'users.id','=','todos.user_id')
     ->where('todos.user_id',$userId)
@@ -44,11 +44,11 @@ class TodoController extends Controller
     return response()->json($todos);
 }
 
-    // lưu trữ todo
+    // list archive todo
 
     public function archive(){
     $userId = Auth::id();
-    $todos = Todo::select('todos.id','todos.name', 'todos.description','type_statuses.type as type')
+    $todos = Todo::select('todos.*','type_statuses.type as type')
     ->leftJoin('type_statuses', 'type_statuses.id', '=', 'todos.status_id')
     ->leftJoin('users', 'users.id','=','todos.user_id')
     ->where('todos.deleted',false)
@@ -86,17 +86,17 @@ class TodoController extends Controller
     }
 }
 
-    // xóa todo app
+    // thêm vào archive
 
     public function destroy($id)
 {
-    $todo = Todo::where('user_id', Auth::id())->find($id); // Chỉ lấy todo của người dùng đăng nhập
+    $todo = Todo::where('user_id', Auth::id())->find($id);
     if($todo) {
         $todo->deleted = false;
         $todo->save();
-        return response()->json('Delete todo success');
+        return response()->json('Archive todo success');
     } else {
-        return response()->json('Delete fail', 404); 
+        return response()->json('Archive fail', 404); 
     }
 }
 
@@ -133,4 +133,20 @@ class TodoController extends Controller
     $todo->save(); 
     return response()->json('Update todo success!');
 }
+
+    // thay đổi trạng thái done/undone
+
+    public function status($id){
+        $todo = Todo::where('user_id', Auth::id())->find($id);
+        if($todo) {
+            $StatusId = $todo->status_id === 1 ? 4 : 1; 
+            $todo->status_id = $StatusId;
+            $todo->save();
+            return response()->json([$StatusId]); 
+        } else {
+            return response()->json('Update status fail', 404); 
+        }
+    }
+    
+    
 }

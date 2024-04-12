@@ -100,10 +100,15 @@ const deleteTodo = async (_id,jwtToken) => {
     }
 }
 
-const changeStatusTodo = async (id) => {
+const changeStatusTodo = async (id,jwtToken) => {
     try {
-      const result = await axios.patch(`http://localhost:8088/api/status/${id}`);
-      return result.status;
+      const result = await axios.patch(`http://localhost:8088/api/status/${id}`,null,{
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+      });
+      console.log(result.data);
+      return result.data;
     } catch (error) {
       throw error;
     }
