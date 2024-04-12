@@ -3,6 +3,8 @@ import * as userService from "../service/UserService";
 import { NavLink,Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { BiLogOutCircle, BiUserCircle} from "react-icons/bi";
+import { GrStatusGood } from "react-icons/gr";
+import { MdOutlineArchive } from "react-icons/md";
 import Swal from 'sweetalert2';
 const Header = ({inputSearch,onInputChange}) => {
     const [JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
@@ -22,7 +24,6 @@ const getUserId = async () => {
     const jwtToken = localStorage.getItem("JWT");
     if (jwtToken) {
         const id = await userService.getIdByUserName(jwtToken);
-        console.log(id);
         setUserId(id);
     }
 }
@@ -76,8 +77,8 @@ const logout = () => {
                         <i className="fas fa-bars"/>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <NavLink className="navbar-brand mt-2 mt-lg-0" to={`/`}>
-                            Todo
+                        <NavLink className="navbar-brand mx-5 mt-2 mt-lg-0" to={`/`}>
+                            <h3>Todo</h3>
                         </NavLink>
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
@@ -87,7 +88,7 @@ const logout = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className="header-right col-lg-6 d-flex align-items-center justify-content-end">
+                    <div className="header-right col-lg-6 d-flex align-items-center justify-content-end mx-4">
 
                         <a href="#" className="user">
                             <img
@@ -115,6 +116,19 @@ const logout = () => {
                                             <BiUserCircle className="me-3 ms-0" size={25} />
                                             <div className="dropdown-text">Thông tin</div>
                                         </Link>
+
+                                        <Link to={`/fillter`}
+                                        className="user-dropdown-item">
+                                            <GrStatusGood className="me-3 ms-0" size={25} />
+                                            <div className="dropdown-text">Done</div>
+                                        </Link>
+
+                                        <Link to={`/archive`}
+                                        className="user-dropdown-item">
+                                            <MdOutlineArchive className="me-3 ms-0" size={25} />
+                                            <div className="dropdown-text">lưu trữ</div>
+                                        </Link>
+
                                         <Link className="user-dropdown-item">
                                             <BiLogOutCircle className="me-3 ms-0" size={25} />
                                             <div

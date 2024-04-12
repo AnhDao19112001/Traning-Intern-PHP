@@ -18,12 +18,18 @@ function UpdateTodoApp() {
         getStatus();
     },[])
     const getByID = async () => {
-        const result = await todoService.findById(param.id);
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken){
+            const result = await todoService.findById(param.id,jwtToken);
         setTodoApp(result);
+        }
     }
 
     useEffect(() => {
-        getByID();
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken){
+            getByID();
+        }
     }, [param.id]);
 
     if(!todoApp){
@@ -57,12 +63,15 @@ function UpdateTodoApp() {
             .matches(/^[0-9+.]+$/,"Không chứa ký tự đặc biệt!")
         })}
         onSubmit={async (value) => {
-            await todoService.updateTodo(param.id, value);
+            const jwtToken = localStorage.getItem("JWT");
+            if(jwtToken){
+                await todoService.updateTodo(param.id, value,jwtToken);
             Swal.fire({
                 title: `Update ${value.name} success`,
                 icon: "success"
             })
-            navigate(`/`)}}>
+            navigate(`/`)}}}
+            >
             {({handleSubmit, handleChange, values}) => (
                 <form onSubmit={handleSubmit}>
                     <div className="container mt-5">

@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import todoService from "../service/TodoService";
+import { NavLink } from "react-router-dom";
 function Filter() {
     const [typeStatus, setTypeStatus] = useState([]);
-    const [archive, setArchive] = useState([])
-    const getArchiveTodo = async () => {
-        const result = await todoService.getArchive();
-        setArchive(result);
+    const [fillter, setFillter] = useState([])
+    const getFillterTodo = async () => {
+      const jwtToken = localStorage.getItem("JWT");
+      if(jwtToken){
+        const result = await todoService.getFillter(jwtToken);
+        setFillter(result);
+      }
     }
 
     const getTypeStatus = async () => {
@@ -14,7 +18,10 @@ function Filter() {
     }
 
     useEffect(() => {
-        getArchiveTodo();
+      const jwtToken = localStorage.getItem("JWT");
+      if(jwtToken){
+        getFillterTodo();
+      }
         getTypeStatus();
     },[])
 
@@ -23,7 +30,6 @@ function Filter() {
         <table className="table table-hover container mt-5">
             <thead className="text-center">
               <tr>
-                <th scope="col">NO</th>
                 <th scope="col">Todo</th>
                 <th scope="col">Description</th>
                 <th scope="col">Status</th>
@@ -31,22 +37,17 @@ function Filter() {
             </thead>
             <tbody className="text-center">
               {
-                archive.map((value, key) => (
+                fillter.map((value, key) => (
                   <tr key={key.id} scope="row">
-                    {/* <th scope="row">{++stt}</th> */}
                     <td>{value.name}</td>
                     <td>{value.description}</td>
-                    <td>
-                        {
-                            typeStatus.map(
-                                (values) => values.id === parseInt(value.status_id)
-                        )[0]?.type}
-                    </td>
+                    <td>{value.type_status?.type}</td>
                   </tr>
                 ))
               }
             </tbody>
           </table>
+          <NavLink to={`/`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
         </>
     )
 }

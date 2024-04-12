@@ -6,6 +6,7 @@ function DetailTodoApp() {
     const [todo, setTodo] = useState({});
     const [typeStatus, setTypeStatus] = useState([])
     const param = useParams();
+    // const [JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
 
     const getListStatus = async () => {
         const result = await todoService.typeStatus();
@@ -13,15 +14,21 @@ function DetailTodoApp() {
     }
 
     useEffect(() => {
-        getListStatus();
+            getListStatus();
     },[])
 
     const getDetail = async () => {
-        const result = await todoService.findById(param.id);
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken){
+            const result = await todoService.findById(param.id,jwtToken);
         setTodo(result);
+        } 
     } 
     useEffect(() => {
-        getDetail();
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken){
+            getDetail();
+        }
     },[param.id])
     return(
         <form>
@@ -66,7 +73,6 @@ function DetailTodoApp() {
                                     name="type"
                                     id="type">{todo.type_status?.type}</p>
                     </div>
-
                         <div className="mb-5">
                             <NavLink to={`/`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
                         </div>

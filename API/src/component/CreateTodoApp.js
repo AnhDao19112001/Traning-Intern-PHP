@@ -41,13 +41,16 @@ function CreateTodoApp() {
             })}
             onSubmit={async (values, { setSubmitting }) => {
                 try {
-                    await todoService.createTodo(values);
+                    const jwtToken = localStorage.getItem("JWT");
+                    if(jwtToken){
+                        await todoService.createTodo(values,jwtToken);
                     setSubmitting(false);
                     Swal.fire({
                         title: 'Create ' + values.name + ' success',
                         icon: 'success'
                     });
                     navigate('/');
+                    } 
                 } catch (error) {
                     Swal.fire({
                         title: 'Create ' + values.name + ' fail',

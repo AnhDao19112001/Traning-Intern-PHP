@@ -23,7 +23,6 @@ function Home() {
     const [modal, setModal] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedTodo, setSelectedTodo] = useState(null);
-
 // --------------- Pagination --------------- //
 
     const itemsPerPage = 5;
@@ -71,14 +70,17 @@ const toggleModal = () => setModal(!modal);
 
     const handleDelete = async (id) => {
         try {
-            await todoService.deleteTodo(id);
+          const jwtToken = localStorage.getItem("JWT");
+          if(jwtToken) {
+            await todoService.deleteTodo(id,jwtToken);
             Swal.fire({
-              title: `Delete success`,
+              title: `Archive success`,
               icon: "success"
             });
-            const data = await todoService.search(findByName, sortBy, sortOrder);
+            const data = await todoService.search(findByName, sortBy, sortOrder,jwtToken);
             setTodoList(data);
             toggleModal();
+          }
         } catch (error) {
             console.log(error);
         }
@@ -89,13 +91,19 @@ const toggleModal = () => setModal(!modal);
     useEffect(() => {
         const searchByName = async () => {
             try {
-                const todoData = await todoService.search(findByName, sortBy, sortOrder);
+              const jwtToken = localStorage.getItem("JWT");
+              if(jwtToken){
+                const todoData = await todoService.search(findByName, sortBy, sortOrder,jwtToken);
                 setTodoList(todoData);
+              }
             } catch (error) {
                 console.log(error+'chưa được rồi');
             }
         };
-        searchByName();
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken){
+          searchByName();
+        }
     }, [sortBy, sortOrder, findByName]);
 
     const handleSubmit = async (values) => {
@@ -112,21 +120,6 @@ const toggleModal = () => setModal(!modal);
     setDropdownOpen(!dropdownOpen);
     setSelectedTodo(todo);
   }
-
-// --------------- Status --------------- //
-
-function getStatusColor (status_id) {
-  switch(status_id) {
-    case 1:
-      return "green";
-    case 2:
-      return "yellow";
-    case 3:   
-      return "red";
-    default:
-      return "white"
-  }
-}
 
     return(
         <>
@@ -177,7 +170,7 @@ function getStatusColor (status_id) {
             <tbody className="text-center">
               {
                 currentItems.map((value, key) => (
-                  <tr key={key.id} scope="row" style={{ color: getStatusColor(value.status_id) }}>
+                  <tr key={key.id} scope="row">
                     <th scope="row">{++stt}</th>
                     <td><NavLink to={`/getByID/${value.id}`}>{value.name}</NavLink></td>
                     <td>{value.description}</td>
@@ -229,13 +222,13 @@ function getStatusColor (status_id) {
           </div>
           <div>
             <Modal isOpen={modal} toggle={toggleModal}>
-                <ModalHeader toggle={toggleModal}>Delete TodoApp</ModalHeader>
+                <ModalHeader toggle={toggleModal}>Lưu trữ</ModalHeader>
                 <ModalBody>
-                    Do you want to delete {todoObject.name} ?
+                    Do you want to Archive {todoObject.name} ?
                 </ModalBody>
                 <ModalFooter>
                     <Button color="secondary" onClick={toggleModal}>Close</Button>
-                    <Button color="danger" onClick={() => handleDelete(todoObject.id)}>Delete</Button>
+                    <Button color="danger" onClick={() => handleDelete(todoObject.id)}>Save</Button>
                 </ModalFooter>
             </Modal>
         </div>

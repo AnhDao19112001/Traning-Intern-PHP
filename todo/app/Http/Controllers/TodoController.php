@@ -96,7 +96,7 @@ class TodoController extends Controller
         $todo->save();
         return response()->json('Delete todo success');
     } else {
-        return response()->json('Delete fail', 404); // Trả về lỗi 404 nếu không tìm thấy hoặc không phải của người dùng
+        return response()->json('Delete fail', 404); 
     }
 }
 
@@ -104,7 +104,7 @@ class TodoController extends Controller
  
     public function id($id)
     {
-        $todo = Todo::where('user_id', Auth::id())->find($id); // Chỉ lấy todo của người dùng đăng nhập
+        $todo = Todo::where('user_id', Auth::id())->find($id); 
         if ($todo) {
             return response()->json($todo);
         } else {
@@ -116,7 +116,7 @@ class TodoController extends Controller
 
     public function update(Request $request, $id)
 {
-    $todo = Todo::where('user_id', Auth::id())->find($id); // Chỉ lấy todo của người dùng đăng nhập
+    $todo = Todo::where('user_id', Auth::id())->find($id); 
 
     if (!$todo) {
         return response()->json('Todo not found', 404);
