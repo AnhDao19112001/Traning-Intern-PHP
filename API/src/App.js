@@ -9,10 +9,12 @@ import Login from './component/Login';
 import Register from './component/Register';
 import Filter from './component/Fillter';
 import Archive from './component/Archive';
+import Intro from './component/Intro';
 function App() {
   return (
     <Routes>
-      <Route path= {`/`} element={<Home/>} />
+      <Route path= {`/home`} element={<Home/>} />
+      <Route path= {`/`} element={<Intro/>} />
       <Route path= {`/fillter`} element={<Filter/>} />
       <Route path= {`/archive`} element={<Archive/>} />
       <Route path= {`/createTodo`} element={<CreateTodoApp/>} />

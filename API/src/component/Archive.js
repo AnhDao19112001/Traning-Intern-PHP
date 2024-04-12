@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import todoService from "../service/TodoService";
 import { NavLink } from "react-router-dom";
+import Header from "./Header";
 function Archive() {
     const [typeStatus, setTypeStatus] = useState([]);
     const [archive, setArchive] = useState([])
@@ -27,6 +28,7 @@ function Archive() {
 
     return(
         <>
+        <Header/>
         <table className="table table-hover container mt-5">
             <thead className="text-center">
               <tr>
@@ -47,7 +49,7 @@ function Archive() {
               }
             </tbody>
           </table>
-          <NavLink to={`/`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
+          <NavLink to={`/home`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
         </>
     )
 }

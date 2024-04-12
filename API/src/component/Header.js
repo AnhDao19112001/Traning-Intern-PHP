@@ -40,7 +40,7 @@ const handleInputChange = (event) => {
 }
 
 const handleTodo = () => {
-    navigate(`/`);
+    navigate(`/home`);
 }
 
 const handleSearch = (event) => {
@@ -51,8 +51,8 @@ const handleSearch = (event) => {
 const logout = () => {
     localStorage.removeItem("JWT");
     setJwtToken(undefined);
-    setName("");
-    navigate('/');
+    setName(undefined);
+    navigate(`/`);
     Swal.fire({
         title: 'Đăng xuất thành công!',
         icon: 'success'
@@ -82,7 +82,7 @@ const logout = () => {
                         </NavLink>
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link" to={"/"}>
+                                <Link className="nav-link" to={"/home"}>
                                     Trang chủ
                                 </Link>
                             </li>

@@ -4,6 +4,7 @@ import todoService from "../service/TodoService";
 import * as yup from 'yup';
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
+import Header from "./Header";
 
 function CreateTodoApp() {
     const [typeStatus, setTypeStatus] = useState([]);
@@ -49,7 +50,7 @@ function CreateTodoApp() {
                         title: 'Create ' + values.name + ' success',
                         icon: 'success'
                     });
-                    navigate('/');
+                    navigate('/home');
                     } 
                 } catch (error) {
                     Swal.fire({
@@ -61,6 +62,7 @@ function CreateTodoApp() {
             }}>              
             {({handleSubmit}) => (
                 <form >
+                    <Header/>
                     <div className="container mt-5">
                         <div className="row">
                             <div className="col-md-6 offset-md-3">
@@ -160,7 +162,7 @@ function CreateTodoApp() {
                                         </Field>
                                     </div>
                                     <div className="mb-5">
-                                        <NavLink to={`/`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
+                                        <NavLink to={`/home`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
                                         <button 
                                             type="button"
                                             onClick={handleSubmit}

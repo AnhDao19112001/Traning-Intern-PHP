@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import todoService from "../service/TodoService";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import Header from "./Header";
 function DetailTodoApp() {
     const [todo, setTodo] = useState({});
     const [typeStatus, setTypeStatus] = useState([])
     const param = useParams();
-    // const [JwtToken, setJwtToken] = useState(localStorage.getItem("JWT"));
 
     const getListStatus = async () => {
         const result = await todoService.typeStatus();
@@ -32,6 +32,7 @@ function DetailTodoApp() {
     },[param.id])
     return(
         <form>
+            <Header/>
             <div className="container mt-5">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
@@ -74,7 +75,7 @@ function DetailTodoApp() {
                                     id="type">{todo.type_status?.type}</p>
                     </div>
                         <div className="mb-5">
-                            <NavLink to={`/`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
+                            <NavLink to={`/home`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
                         </div>
                     </div>  
                 </div>

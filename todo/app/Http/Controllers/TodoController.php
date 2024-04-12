@@ -133,9 +133,4 @@ class TodoController extends Controller
     $todo->save(); 
     return response()->json('Update todo success!');
 }
-
-
-    public function status(){
-        
-    }
 }

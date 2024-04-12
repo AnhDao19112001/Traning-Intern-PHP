@@ -20,7 +20,7 @@ function Login() {
             if (tempURL) {
                 navigate(tempURL);
             } else {
-                navigate(`/`);
+                navigate(`/home`);
             }
         } catch (err) {
             Swal.fire({
