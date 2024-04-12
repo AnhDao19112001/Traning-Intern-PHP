@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import todoService from "../service/TodoService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import Header from "./Header";
+import Swal from 'sweetalert2'
+import * as userService from "../service/UserService"
 function DetailTodoApp() {
     const [todo, setTodo] = useState({});
     const [typeStatus, setTypeStatus] = useState([])
     const param = useParams();
-
+    const navigate = useNavigate();
     const getListStatus = async () => {
         const result = await todoService.typeStatus();
         setTypeStatus(result)
@@ -18,17 +20,22 @@ function DetailTodoApp() {
     },[])
 
     const getDetail = async () => {
-        const jwtToken = localStorage.getItem("JWT");
+        const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT"));
         if(jwtToken){
             const result = await todoService.findById(param.id,jwtToken);
         setTodo(result);
-        } 
+        } else {
+            Swal.fire("Vui lòng đăng nhập!", "", "warning");
+            localStorage.setItem("tempURL", window.location.pathname);
+            navigate(`/login`);
+        }
     } 
     useEffect(() => {
-        const jwtToken = localStorage.getItem("JWT");
-        if(jwtToken){
-            getDetail();
+        const jwtToken = userService.infoAppUserByJwtToken();
+        if(!jwtToken){
+            navigate('/login')
         }
+        getDetail(param.id);
     },[param.id])
     return(
         <form>

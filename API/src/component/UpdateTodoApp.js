@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import todoService from "../service/TodoService";
 import { useEffect,useState } from "react";
+import * as userService from "../service/UserService"
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from 'yup';
 import Swal from "sweetalert2";
@@ -18,18 +19,24 @@ function UpdateTodoApp() {
     useEffect(() => {
         getStatus();
     },[])
+
     const getByID = async () => {
-        const jwtToken = localStorage.getItem("JWT");
+        const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT")) ;
         if(jwtToken){
             const result = await todoService.findById(param.id,jwtToken);
         setTodoApp(result);
+        } else {
+            Swal.fire("Vui lòng đăng nhập!", "", "warning");
+            localStorage.setItem("tempURL", window.location.pathname);
+            navigate(`/login`);
         }
     }
 
     useEffect(() => {
-        const jwtToken = localStorage.getItem("JWT");
-        if(jwtToken){
-            getByID();
+        getByID();
+        const jwtToken = userService.infoAppUserByJwtToken() ;
+        if(!jwtToken){
+            navigate('/login')
         }
     }, [param.id]);
 
@@ -64,7 +71,8 @@ function UpdateTodoApp() {
             .matches(/^[0-9+.]+$/,"Không chứa ký tự đặc biệt!")
         })}
         onSubmit={async (value) => {
-            const jwtToken = localStorage.getItem("JWT");
+            const jwtToken = userService.infoAppUserByJwtToken();
+            console.log(jwtToken);
             if(jwtToken){
                 await todoService.updateTodo(param.id, value,jwtToken);
             Swal.fire({

@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { NavLink, useNavigate } from "react-router-dom";
 import todoService from "../service/TodoService";
+import * as userService from "../service/UserService"
 import * as yup from 'yup';
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -42,7 +43,7 @@ function CreateTodoApp() {
             })}
             onSubmit={async (values, { setSubmitting }) => {
                 try {
-                    const jwtToken = localStorage.getItem("JWT");
+                    const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT"));
                     if(jwtToken){
                         await todoService.createTodo(values,jwtToken);
                     setSubmitting(false);
@@ -51,6 +52,10 @@ function CreateTodoApp() {
                         icon: 'success'
                     });
                     navigate('/home');
+                    } else {
+                        Swal.fire("Vui lòng đăng nhập!", "", "warning");
+                        localStorage.setItem("tempURL", window.location.pathname);
+                        navigate(`/login`);
                     } 
                 } catch (error) {
                     Swal.fire({
