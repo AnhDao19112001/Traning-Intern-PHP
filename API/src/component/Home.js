@@ -170,7 +170,7 @@ const getStatus = async (id) => {
                     <option value="asc">Tăng dần</option>
                   </select>
               </div>
-          <NavLink to={`/createTodo`} className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}}>Add Todo</NavLink>
+          <NavLink to={`/create-todo`} className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}}>Add Todo</NavLink>
           </div>
 
           <table className="table table-hover container mt-5">
@@ -188,7 +188,7 @@ const getStatus = async (id) => {
                 currentItems.map((value, key) => (
                   <tr key={key.id} scope="row">
                     <th scope="row">{++stt}</th>
-                    <td><NavLink to={`/getByID/${value.id}`}>{value.name}</NavLink></td>
+                    <td><NavLink to={`/get-by-id/${value.id}`}>{value.name}</NavLink></td>
                     <td>{value.description}</td>
                     <td>
             <input

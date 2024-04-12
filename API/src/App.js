@@ -17,9 +17,9 @@ function App() {
       <Route path= {`/`} element={<Intro/>} />
       <Route path= {`/fillter`} element={<Filter/>} />
       <Route path= {`/archive`} element={<Archive/>} />
-      <Route path= {`/createTodo`} element={<CreateTodoApp/>} />
+      <Route path= {`/create-todo`} element={<CreateTodoApp/>} />
       <Route path= {`/update/:id`} element={<UpdateTodoApp/>} />
-      <Route path= {`/getByID/:id`} element={<DetailTodoApp/>} />
+      <Route path= {`/get-by-id/:id`} element={<DetailTodoApp/>} />
       <Route path= {`/login`} element={<Login/>} />
       <Route path= {`/register`} element={<Register/>} />
     </Routes>
