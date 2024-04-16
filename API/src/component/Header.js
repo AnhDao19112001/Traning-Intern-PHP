@@ -52,18 +52,17 @@ const logout = () => {
     localStorage.removeItem("JWT");
     setJwtToken(undefined);
     setName(undefined);
-    navigate(`/`);
     Swal.fire({
-        title: 'Đăng xuất thành công!',
+        title: 'Logout success!',
         icon: 'success'
     }).then(() => {
-        window.location.reload();
+        navigate(`/`);
     });
 }
 
     return(
         <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
                     <button
                         className="navbar-toggler"
@@ -83,7 +82,7 @@ const logout = () => {
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <Link className="nav-link" to={"/home"}>
-                                    Trang chủ
+                                    Home
                                 </Link>
                             </li>
                         </ul>
@@ -98,7 +97,7 @@ const logout = () => {
                             />
                             {!name ? (
                                 <Link to="/login">
-                                    <span className="user-info">Đăng nhập</span>
+                                    <span className="user-info">Login</span>
                                 </Link>
                             ) : (
                                 <span className="user-info" style={{ overflow: "hidden" }}>
@@ -112,13 +111,13 @@ const logout = () => {
                                         <Link to={`/fillter`}
                                         className="user-dropdown-item">
                                             <GrStatusGood className="me-3 ms-0" size={25} />
-                                            <div className="dropdown-text">Done</div>
+                                            <div className="dropdown-text">Done list</div>
                                         </Link>
 
                                         <Link to={`/archive`}
                                         className="user-dropdown-item">
                                             <MdOutlineArchive className="me-3 ms-0" size={25} />
-                                            <div className="dropdown-text">lưu trữ</div>
+                                            <div className="dropdown-text">Archive</div>
                                         </Link>
 
                                         <Link className="user-dropdown-item">
@@ -126,7 +125,7 @@ const logout = () => {
                                             <div
                                                 className="dropdown-text"
                                                 onClick={() => {logout()}}>
-                                                Đăng xuất
+                                                Logout
                                             </div>
                                         </Link>
                                     </>

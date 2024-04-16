@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import todoService from "../service/TodoService";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import Header from "./Header";
-import Swal from 'sweetalert2'
 import * as userService from "../service/UserService"
+import Header from "./Header";
+import Swal from "sweetalert2";
 function DetailTodoApp() {
     const [todo, setTodo] = useState({});
     const [typeStatus, setTypeStatus] = useState([])
     const param = useParams();
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const getListStatus = async () => {
         const result = await todoService.typeStatus();
         setTypeStatus(result)
@@ -30,6 +30,10 @@ function DetailTodoApp() {
         const jwtToken = localStorage.getItem("JWT");
         if(jwtToken){
             getDetail();
+        } else if(!userService.infoAppUserByJwtToken(localStorage.getItem("JWT"))){
+            Swal.fire("Vui lòng đăng nhập!", "", "warning");
+            localStorage.setItem("tempURL", window.location.pathname);
+            navigate(`/login`)
         }
     },[param.id])
     return(

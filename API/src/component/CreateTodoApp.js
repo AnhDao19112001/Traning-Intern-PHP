@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { NavLink, useNavigate } from "react-router-dom";
 import todoService from "../service/TodoService";
-// import {debounce} from 'lodash'
+import * as userService from "../service/UserService"
 import * as yup from 'yup';
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -15,6 +15,11 @@ function CreateTodoApp() {
         setTypeStatus(result);
     }
     useEffect(() => {
+        if(!userService.infoAppUserByJwtToken(localStorage.getItem("JWT"))){
+            Swal.fire("Vui lòng đăng nhập!", "", "warning");
+            localStorage.setItem("tempURL", window.location.pathname);
+            navigate(`/login`)
+        };
         getTypeStatus();
     },[])
 
@@ -52,7 +57,7 @@ function CreateTodoApp() {
                         icon: 'success'
                     });
                     navigate('/home');
-                    }
+                    } 
                 } catch (error) {
                     Swal.fire({
                         title: 'Create ' + values.name + ' fail',
@@ -78,9 +83,6 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="name"
                                             id="name"
-                                            // onChange={debounce((e) => {
-                                            //     setValues({ ...values, name: e.target.value });
-                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">
@@ -101,9 +103,6 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="time"
                                             id="time"
-                                            // onChange={debounce((e) => {
-                                            //     setValues({ ...values, time: e.target.value });
-                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">
@@ -124,9 +123,6 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="day"
                                             id="day"
-                                            // onChange={debounce((e) => {
-                                            //     setValues({ ...values, day: e.target.value });
-                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">
@@ -147,9 +143,6 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="description"
                                             id="description"
-                                            // onChange={debounce((e) => {
-                                            //     setValues({ ...values, description: e.target.value });
-                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">

@@ -37,7 +37,8 @@ function Register() {
          }} 
          validationSchema={yup.object({
             email: yup.string()
-            .required("Không được để trống email").max(250),
+            .required("Không được để trống email").max(250)
+            .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,'email sai định dạng!'),
             name: yup.string()
             .required("Không để trống tên!")
             .max(250,"Không quá 250 ký tự")
@@ -56,95 +57,134 @@ function Register() {
             setSubmitting(false);
             registerUser(values, setErrors)
         }}>
-            <Form>
-            <section className=" gradient-custom">
-            <div className="container py-5 h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-                <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div
-                    className="card bg-dark text-white"
-                    style={{ borderRadius: "1rem" }}>
-                    <div className="card-body p-5 text-center">
-                    <div className="mb-md-5 mt-md-4 pb-5">
-                        <h2 className="fw-bold mb-2 text-uppercase">Register</h2>
-                        <p className="text-white-50 mb-5">
-                            Please enter your login and password!
-                        </p>
-                    <div data-mdb-input-init=""
-                        className="form-outline form-white mb-4">
-                        <Field
-                            type="text"
-                            id="name"
-                            name="name"
-                            className="form-control form-control-lg"
-                        />
-                        <label className="form-label" htmlFor="name">
-                            Name
-                        </label>
-                    </div>
-                    <div data-mdb-input-init=""
-                        className="form-outline form-white mb-4">
-                        <Field
-                            type="email"
-                            id="typeEmailX"
-                            name="email"
-                            className="form-control form-control-lg"
-                        />
-                        <label className="form-label" htmlFor="typeEmailX">
-                            Email
-                        </label>
-                    </div>
-                    <div
-                        data-mdb-input-init=""
-                        className="form-outline form-white mb-4"
-                        >
-                        <Field
-                            type="password"
-                            name="password"
-                            id="password"
-                            className="form-control form-control-lg"
-                        />
-                        <label className="form-label" htmlFor="password">
-                            Password
-                        </label>
-                    </div>
-                    <div className="form-outline form-white mb-4">
-                        <Field
-                            name="password_confirmation"
-                            type="password"
-                            id="typePasswordX"
-                            className="form-control form-control-lg"/>
-                        <div style={{height: 20}}>
-                            <ErrorMessage name="password_confirmation" component="small"
-                                className="text-danger"/>
+        <section className="vh-100">
+                        <div className="container-fluid h-custom">
+                        <div className="row d-flex justify-content-center align-items-center h-100">
+                            <div className="col-md-9 col-lg-6 col-xl-5">
+                            <img
+                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                                className="img-fluid"
+                                alt="Sample image"
+                            />
+                            </div>
+                            <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                            <Form>
+                            <h1 className="text-center mt-2">Register</h1>
+                                <div className="divider d-flex align-items-center my-4">
+                                
+                                </div>
+                
+                                <div className="row">
+                                <div className="form-outline mb-1 col -6">
+                                <Field
+                                    type="email"
+                                    name="email"
+                                    id="form3Example3"
+                                    className="form-control form-control-lg"
+                                    placeholder="Enter a valid email"
+                                />
+                                <label className="form-label mx-2" htmlFor="form3Example3">
+                                    Email 
+                                </label>
+                                <div className="row">
+                                                    <div className="mx-2"
+                                                        style={{
+                                                            height: "0.6rem",
+                                                            marginLeft: "68%",
+                                                            }}>
+                                                        <ErrorMessage className="text-danger" name="email"
+                                                                        component="small" />
+                                                        </div>
+                                                </div>
+                                </div>
+                                <div className="form-outline mb-1 col -6">
+                                <Field
+                                    type="text"
+                                    name="name"
+                                    id="form3Example3"
+                                    className="form-control form-control-lg"
+                                    placeholder="Enter a valid name"
+                                />
+                                <label className="form-label mx-2" htmlFor="form3Example3">
+                                    Name 
+                                </label>
+                                <div className="row">
+                                                    <div className="mx-2"
+                                                        style={{
+                                                            height: "0.6rem",
+                                                            marginLeft: "68%",
+                                                            }}>
+                                                        <ErrorMessage className="text-danger" name="name"
+                                                                        component="small" />
+                                                        </div>
+                                                </div>
+                                </div>
+                                </div>
+
+                                <div className="row">
+                                <div className="form-outline mb-1 mt-4 col-6">
+                                <Field
+                                    type="password"
+                                    id="form3Example4"
+                                    name="password"
+                                    className="form-control form-control-lg"
+                                    placeholder="Enter password"
+                                />
+                                <label className="form-label mx-2" htmlFor="form3Example4">
+                                    Password
+                                </label>
+                                <div className="row">
+                                                    <div className="mx-2"
+                                                        style={{
+                                                            height: "0.6rem",
+                                                            marginLeft: "68%",
+                                                            }}>
+                                                        <ErrorMessage className="text-danger" name="password"
+                                                                        component="small" />
+                                                        </div>
+                                                </div>
+                                </div>
+                                <div className="form-outline mb-1 mt-4 col-6">
+                                <Field
+                                    type="password"
+                                    id="form3Example4"
+                                    name="password_confirmation"
+                                    className="form-control form-control-lg"
+                                    placeholder="confirmation"
+                                />
+                                <label className="form-label mx-2" htmlFor="form3Example4">
+                                    Password Confirmation
+                                </label>
+                                <div className="row">
+                                    <div className="mx-2"
+                                        style={{
+                                        height: "0.6rem",
+                                        marginLeft: "68%",}}>
+                                        <ErrorMessage className="text-danger" name="password_confirmation"
+                                                    component="small" />
+                                     </div>
+                                </div>
+                            </div>
+                        </div>   
+                        <div className="text-center text-lg-start mt-2 pt-2">
+                            <button
+                                type="submit"
+                                className="btn btn-primary btn-lg"
+                                style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}>
+                                Register
+                            </button>
+                            <p className="small fw-bold mt-2 pt-1 mb-0">
+                                Don't have an account?{" "}
+                                <Link to={`/login`} className="link-danger">
+                                    Sign In
+                                </Link>
+                            </p>
                         </div>
-                            <label className="form-label" htmlFor="typePasswordX">
-                                Nhập lại mật khẩu <span className="text-danger">*</span>
-                            </label>
-                        </div>
-                        <button
-                        data-mdb-button-init=""
-                        data-mdb-ripple-init=""
-                        className="btn btn-outline-light btn-lg px-5"
-                        type="submit">
-                            Register
-                        </button>
-                    </div>
-                    <div>
-                    <p className="mb-0">
-                        Do you already have an account?{" "}
-                        <Link to={`/login`} className="text-white-50 fw-bold">
-                            Signin
-                        </Link>
-                        </p>
-                    </div>
-                    </div>
+                    </Form>
                 </div>
                 </div>
-            </div>
-            </div>
-        </section>
-            </Form>
+                </div>
+            </section>
         </Formik>
         </>
     )

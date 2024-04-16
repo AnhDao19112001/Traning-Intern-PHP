@@ -150,7 +150,7 @@ const getStatus = async (id) => {
                                 name="findByName"
                                 id="form-input-home"
                                 className="form-input m-0"
-                                placeholder="Tìm kiếm ..."/>
+                                placeholder="Search by name ..."/>
                             <button type="submit" >
                                 <CiSearch/>
                             </button>
@@ -158,16 +158,17 @@ const getStatus = async (id) => {
               </Formik>
               <div className="col-auto me-2">
                   <select className="form-select" onChange={(event) => setSortBy(event.target.value)}>
-                    <option value="id">Sắp xếp theo</option>
-                    <option value="name">Name</option>
+                    <option value="id" className="mb-2">Sorted by</option>
+                    <hr/>
+                    <option value="name" className="mt-2">Name</option>
                     <option value="time">Time</option>
                     <option value="day">Day</option>
                   </select>
               </div>
               <div className="col-auto me-2">
                   <select className="form-select" onChange={(event) => setSortOrder(event.target.value)}>
-                    <option value="desc">Giảm gần</option>
-                    <option value="asc">Tăng dần</option>
+                    <option value="desc">Decrease</option>
+                    <option value="asc">Ascending</option>
                   </select>
               </div>
           <NavLink to={`/create-todo`} className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}}>Add Todo</NavLink>
