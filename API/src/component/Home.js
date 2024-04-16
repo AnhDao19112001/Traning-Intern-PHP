@@ -11,6 +11,9 @@ import"../css/pagination.css";
 import { Formik, Form, Field } from "formik";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Swal from "sweetalert2";
+import { IoIosCreate } from "react-icons/io";
+import { IoArchiveOutline } from "react-icons/io5";
+import { MdCreateNewFolder } from "react-icons/md";
 function Home() {
     const [currentItems, setCurrentItems] = useState([]);
     const [findByName, setFindByName] = useState("")
@@ -171,7 +174,7 @@ const getStatus = async (id) => {
                     <option value="asc">Ascending</option>
                   </select>
               </div>
-          <NavLink to={`/create-todo`} className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}}>Add Todo</NavLink>
+          <NavLink to={`/create-todo`} className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}}><MdCreateNewFolder /> Add Todo</NavLink>
           </div>
 
           <table className="table table-hover container mt-5">
@@ -209,8 +212,10 @@ const getStatus = async (id) => {
                         </DropdownToggle>
                         <DropdownMenu>
                           <DropdownItem>
-                            <NavLink to={`/update/${value.id}`} className={"btn btn-outline-warning mx-2"}>Update</NavLink>
-                            <Button outline color="danger" className="btn btn-outline-modal" onClick={() => deleteTodoApp(value)}>Archive</Button>
+                            <NavLink to={`/update/${value.id}`} className={"btn btn-outline-warning mx-4"}><IoIosCreate /> Update</NavLink>
+                          </DropdownItem>
+                          <DropdownItem>
+                          <Button outline color="danger" className="btn btn-outline-modal mx-4" onClick={() => deleteTodoApp(value)}><IoArchiveOutline /> Archive</Button>
                           </DropdownItem>
                         </DropdownMenu>
                       </Dropdown>

@@ -100,6 +100,20 @@ class TodoController extends Controller
     }
 }
 
+    // xóa khỏi archive
+
+    public function restore($id)
+    {
+        $todo = Todo::where('user_id', Auth::id())->find($id);
+        if($todo) {
+            $todo->deleted = true;
+            $todo->save();
+            return response()->json('Archive todo success');
+        } else {
+            return response()->json('Archive fail', 404); 
+        }
+    }
+
     // Find by id
  
     public function id($id)

@@ -100,6 +100,19 @@ const deleteTodo = async (_id,jwtToken) => {
     }
 }
 
+const restoreTodo = async (_id,jwtToken) => {
+    try {
+        const result = await axios.delete(`http://localhost:8088/api/restore/${_id}`,{
+            headers: {
+                Authorization: `Bearer ${jwtToken}`
+            }
+        });
+        return result.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const changeStatusTodo = async (id,jwtToken) => {
     try {
       const result = await axios.patch(`http://localhost:8088/api/status/${id}`,null,{
@@ -132,6 +145,7 @@ const todoService = {
     changeStatusTodo,
     typeStatus,
     getArchive,
-    getFillter
+    getFillter,
+    restoreTodo
 } 
 export default todoService;

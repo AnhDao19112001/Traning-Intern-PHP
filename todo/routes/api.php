@@ -32,6 +32,7 @@ Route::get('/todoList',[TodoController::class,'index']);
 Route::get('/fillter',[TodoController::class,'fillter']);
 Route::post('/createTodo',[TodoController::class,'store']);
 Route::delete('/delete/{id}',[TodoController::class,'destroy']);
+Route::delete('/restore/{id}',[TodoController::class,'restore']);
 Route::get('/getByID/{id}',[TodoController::class,'id']);
 Route::patch('/update/{id}',[TodoController::class,'update']);
 Route::patch('/status/{id}',[TodoController::class,'status']);
