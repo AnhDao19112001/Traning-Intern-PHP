@@ -20,22 +20,17 @@ function DetailTodoApp() {
     },[])
 
     const getDetail = async () => {
-        const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT"));
+        const jwtToken = localStorage.getItem("JWT");
         if(jwtToken){
             const result = await todoService.findById(param.id,jwtToken);
         setTodo(result);
-        } else {
-            Swal.fire("Vui lòng đăng nhập!", "", "warning");
-            localStorage.setItem("tempURL", window.location.pathname);
-            navigate(`/login`);
-        }
+        } 
     } 
     useEffect(() => {
-        const jwtToken = userService.infoAppUserByJwtToken();
-        if(!jwtToken){
-            navigate('/login')
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken){
+            getDetail();
         }
-        getDetail(param.id);
     },[param.id])
     return(
         <form>

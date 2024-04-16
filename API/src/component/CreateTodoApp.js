@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { NavLink, useNavigate } from "react-router-dom";
 import todoService from "../service/TodoService";
-import * as userService from "../service/UserService"
+// import {debounce} from 'lodash'
 import * as yup from 'yup';
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
@@ -43,7 +43,7 @@ function CreateTodoApp() {
             })}
             onSubmit={async (values, { setSubmitting }) => {
                 try {
-                    const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT"));
+                    const jwtToken = localStorage.getItem("JWT");
                     if(jwtToken){
                         await todoService.createTodo(values,jwtToken);
                     setSubmitting(false);
@@ -52,11 +52,7 @@ function CreateTodoApp() {
                         icon: 'success'
                     });
                     navigate('/home');
-                    } else {
-                        Swal.fire("Vui lòng đăng nhập!", "", "warning");
-                        localStorage.setItem("tempURL", window.location.pathname);
-                        navigate(`/login`);
-                    } 
+                    }
                 } catch (error) {
                     Swal.fire({
                         title: 'Create ' + values.name + ' fail',
@@ -65,7 +61,7 @@ function CreateTodoApp() {
                     setSubmitting(false);
                 }
             }}>              
-            {({handleSubmit}) => (
+            {({handleSubmit, values, setValues}) => (
                 <form >
                     <Header/>
                     <div className="container mt-5">
@@ -82,6 +78,9 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="name"
                                             id="name"
+                                            // onChange={debounce((e) => {
+                                            //     setValues({ ...values, name: e.target.value });
+                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">
@@ -102,6 +101,9 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="time"
                                             id="time"
+                                            // onChange={debounce((e) => {
+                                            //     setValues({ ...values, time: e.target.value });
+                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">
@@ -122,6 +124,9 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="day"
                                             id="day"
+                                            // onChange={debounce((e) => {
+                                            //     setValues({ ...values, day: e.target.value });
+                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">
@@ -142,6 +147,9 @@ function CreateTodoApp() {
                                             className="form-control"
                                             name="description"
                                             id="description"
+                                            // onChange={debounce((e) => {
+                                            //     setValues({ ...values, description: e.target.value });
+                                            // }, 1000)}
                                         />
                                     </div>
                                     <div className="row">
@@ -170,7 +178,7 @@ function CreateTodoApp() {
                                         <NavLink to={`/home`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
                                         <button 
                                             type="button"
-                                            onClick={handleSubmit}
+                                            onClick={() => handleSubmit()}
                                             className="btn btn-outline-primary col-1 float-end" 
                                             style={{ width: "auto" }}>
                                             Save

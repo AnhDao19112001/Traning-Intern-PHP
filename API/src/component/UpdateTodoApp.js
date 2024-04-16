@@ -20,23 +20,38 @@ function UpdateTodoApp() {
         getStatus();
     },[])
 
+    // const getByID = async () => {
+    //     const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT")) ;
+    //     if(jwtToken){
+    //         const result = await todoService.findById(param.id,jwtToken);
+    //     setTodoApp(result);
+    //     } else {
+    //         Swal.fire("Vui lòng đăng nhập!", "", "warning");
+    //         localStorage.setItem("tempURL", window.location.pathname);
+    //         navigate(`/login`);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     getByID();
+    //     const jwtToken = userService.infoAppUserByJwtToken() ;
+    //     if(!jwtToken){
+    //         navigate('/login')
+    //     }
+    // }, [param.id]);
+
     const getByID = async () => {
-        const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT")) ;
-        if(jwtToken){
-            const result = await todoService.findById(param.id,jwtToken);
-        setTodoApp(result);
-        } else {
-            Swal.fire("Vui lòng đăng nhập!", "", "warning");
-            localStorage.setItem("tempURL", window.location.pathname);
-            navigate(`/login`);
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken) {
+            const result = await todoService.findById(param.id,jwtToken)
+            setTodoApp(result);
         }
     }
 
     useEffect(() => {
-        getByID();
-        const jwtToken = userService.infoAppUserByJwtToken() ;
-        if(!jwtToken){
-            navigate('/login')
+        const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken){
+            getByID();
         }
     }, [param.id]);
 
@@ -71,7 +86,7 @@ function UpdateTodoApp() {
             .matches(/^[0-9+.]+$/,"Không chứa ký tự đặc biệt!")
         })}
         onSubmit={async (value) => {
-            const jwtToken = userService.infoAppUserByJwtToken();
+            const jwtToken = localStorage.getItem("JWT");
             console.log(jwtToken);
             if(jwtToken){
                 await todoService.updateTodo(param.id, value,jwtToken);

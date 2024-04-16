@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react";
 import todoService from "../service/TodoService";
-import * as userService from "../service/UserService"
+// import * as userService from "../service/UserService"
 import { NavLink, useNavigate } from "react-router-dom";
 import Header from "./Header";
-import Swal from "sweetalert2";
 function Filter() {
     const [typeStatus, setTypeStatus] = useState([]);
     const [fillter, setFillter] = useState([]);
-    const navigate = useNavigate()
     const getFillterTodo = async () => {
-      const jwtToken = userService.infoAppUserByJwtToken(localStorage.getItem("JWT"));
+      const jwtToken = localStorage.getItem("JWT");
       if(jwtToken){
         const result = await todoService.getFillter(jwtToken);
         setFillter(result);
-      }else {
-        Swal.fire("Vui lòng đăng nhập!", "", "warning");
-        localStorage.setItem("tempURL", window.location.pathname);
-        navigate(`/login`);
-    }
+      }
   }
 
     const getTypeStatus = async () => {
@@ -26,11 +20,10 @@ function Filter() {
     }
 
     useEffect(() => {
-      const jwtToken = userService.infoAppUserByJwtToken();
-      if(!jwtToken){
-        navigate('/login')
+      const jwtToken = localStorage.getItem("JWT");
+      if(jwtToken){
+        getFillterTodo();
       }
-      getFillterTodo();
         getTypeStatus();
     },[])
 
