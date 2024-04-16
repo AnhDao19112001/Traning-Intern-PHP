@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { CiSearch } from "react-icons/ci";
 import todoService from "../service/TodoService";
 import Header from "./Header";
+import * as userService from "../service/UserService"
 import { BsThreeDots } from "react-icons/bs";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import "../css/search.css";
@@ -27,6 +28,7 @@ function Home() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [isCheckStatus, setIsCheckStatus] = useState(false);
+    const navigate = useNavigate();
 // --------------- Pagination --------------- //
 
     const itemsPerPage = 5;
@@ -106,13 +108,17 @@ const toggleModal = () => setModal(!modal);
                 setTodoList(todoData);
               }
             } catch (error) {
-                console.log(error+'chưa được rồi');
+                console.log(error);
             }
         };
         const jwtToken = localStorage.getItem("JWT");
         if(jwtToken){
           searchByName();
-        }
+        } else if(!userService.infoAppUserByJwtToken(localStorage.getItem("JWT"))){
+          Swal.fire("Vui lòng đăng nhập!", "", "warning");
+          localStorage.setItem("tempURL", window.location.pathname);
+          navigate(`/login`)
+      }
     }, [sortBy, sortOrder, findByName]);
 
     const handleSubmit = async (values) => {

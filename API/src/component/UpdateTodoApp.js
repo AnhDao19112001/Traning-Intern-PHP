@@ -53,8 +53,8 @@ function UpdateTodoApp() {
             description: todoApp?.description, 
             status_id: todoApp?.status_id,
             type_status: {
-                id:todoApp?.type_status?.id,
-                type: todoApp?.type_status?.type
+                id:todoApp?.type_statuses?.id,
+                type: todoApp?.type_statuses?.type
             }
         }}
         validationSchema={yup.object({
@@ -71,7 +71,6 @@ function UpdateTodoApp() {
         })}
         onSubmit={async (value) => {
             const jwtToken = localStorage.getItem("JWT");
-            console.log(jwtToken);
             if(jwtToken){
                 await todoService.updateTodo(param.id, value,jwtToken);
             Swal.fire({
@@ -113,7 +112,7 @@ function UpdateTodoApp() {
                                     <div className="mb-3">
                                         <label htmlFor="time">Time</label>
                                         <Field
-                                            type="text"
+                                            type="time"
                                             className="form-control"
                                             name="time"
                                             id="time"

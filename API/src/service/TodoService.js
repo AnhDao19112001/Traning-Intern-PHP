@@ -120,7 +120,6 @@ const changeStatusTodo = async (id,jwtToken) => {
             Authorization: `Bearer ${jwtToken}`
         }
       });
-      console.log(result.data);
       return result.data;
     } catch (error) {
       throw error;

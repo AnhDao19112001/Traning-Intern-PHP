@@ -66,7 +66,7 @@ function CreateTodoApp() {
                     setSubmitting(false);
                 }
             }}>              
-            {({handleSubmit, values, setValues}) => (
+            {({handleSubmit}) => (
                 <form >
                     <Header/>
                     <div className="container mt-5">
@@ -99,7 +99,7 @@ function CreateTodoApp() {
                                     <div className="mb-3">
                                         <label htmlFor="time">Time</label>
                                         <Field
-                                            type="text"
+                                            type="time"
                                             className="form-control"
                                             name="time"
                                             id="time"

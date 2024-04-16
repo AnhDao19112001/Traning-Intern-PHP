@@ -78,7 +78,7 @@ function DetailTodoApp() {
                         <p type=""
                                     className="form-control"
                                     name="type"
-                                    id="type">{todo.type_status?.type}</p>
+                                    id="type">{todo.type_statuses?.type}</p>
                     </div>
                         <div className="mb-5">
                             <NavLink to={`/home`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
