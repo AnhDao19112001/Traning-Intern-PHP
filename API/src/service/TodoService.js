@@ -8,6 +8,7 @@ const createTodo = async (values,jwtToken) => {
             Authorization : `Bearer ${jwtToken}`
         }
     });
+    console.log(result.data);
         return result.data;
     } catch (error) {
         console.log(error.result.data);   

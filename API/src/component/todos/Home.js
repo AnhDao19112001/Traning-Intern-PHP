@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { IoIosCreate } from "react-icons/io";
 import { IoArchiveOutline } from "react-icons/io5";
 import { MdCreateNewFolder } from "react-icons/md";
+import CreateTodoApp from "./CreateTodoApp";
 function Home() {
     const [currentItems, setCurrentItems] = useState([]);
     const [findByName, setFindByName] = useState("")
@@ -29,6 +30,13 @@ function Home() {
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [isCheckStatus, setIsCheckStatus] = useState(false);
     const navigate = useNavigate();
+
+    const [modalCreateOpen, setModalCreateOpen] = useState(false);
+
+    const toggleModalCreate = () => {
+      setModalCreateOpen(!modalCreateOpen);
+    };
+
 // --------------- Pagination --------------- //
 
     const itemsPerPage = 5;
@@ -121,7 +129,8 @@ const toggleModal = () => setModal(!modal);
       }
     }, [sortBy, sortOrder, findByName]);
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values,event) => {
+      event.preventDefault();
       try {
           const result = await todoService.search(values.findByName, sortBy, sortOrder);
           setTodoList(result);
@@ -180,7 +189,9 @@ const getStatus = async (id) => {
                     <option value="asc">Ascending</option>
                   </select>
               </div>
-          <NavLink to={`/create-todo`} className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}}><MdCreateNewFolder /> Add Todo</NavLink>
+              <button to="#" className={"btn btn-outline-primary float-end"} style={{marginRight:"85px"}} onClick={toggleModalCreate}>
+                <MdCreateNewFolder /> Add Todo
+              </button>
           </div>
 
           <table className="table table-hover container mt-5">
@@ -226,6 +237,7 @@ const getStatus = async (id) => {
                         </DropdownMenu>
                       </Dropdown>
                     </td>
+                    
                   </tr>
                 ))
               }
@@ -258,6 +270,14 @@ const getStatus = async (id) => {
                     <Button color="danger" onClick={() => handleDelete(todoObject.id)}>Save</Button>
                 </ModalFooter>
             </Modal>
+        </div>
+        <div>
+        <Modal isOpen={modalCreateOpen} toggle={toggleModalCreate}>
+        <ModalHeader toggle={toggleModalCreate}>Create Todo</ModalHeader>
+        <ModalBody>
+          <CreateTodoApp toggleModalCreate={toggleModalCreate} />
+        </ModalBody>
+        </Modal>
         </div>
         </>
     )

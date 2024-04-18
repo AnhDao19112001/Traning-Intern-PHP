@@ -5,9 +5,8 @@ import * as userService from "../../service/UserService"
 import * as yup from 'yup';
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import Header from "../layout/Header";
 
-function CreateTodoApp() {
+const CreateTodoApp = ({ toggleModalCreate  }) => {
     const [typeStatus, setTypeStatus] = useState([]);
     const navigate = useNavigate();
     const getTypeStatus = async () => {
@@ -22,6 +21,31 @@ function CreateTodoApp() {
         };
         getTypeStatus();
     },[])
+
+    const handleSubmit = async (values, { setSubmitting }) => {
+        try {
+          const jwtToken = localStorage.getItem("JWT");
+          if (jwtToken) {
+            await todoService.createTodo(jwtToken);
+            setSubmitting(false)
+            Swal.fire({
+              title: 'Create success',
+              icon: 'success'
+            });
+            toggleModalCreate(values);
+          }
+        } catch (error) {
+          Swal.fire({
+            title: 'Create fail',
+            icon: "error"
+          });
+          setSubmitting(false)
+        }
+      }
+
+    useEffect(() => {
+            toggleModalCreate()
+    }, [ toggleModalCreate]);
 
     return (
         <Formik 
@@ -46,35 +70,17 @@ function CreateTodoApp() {
             description: yup.string()
             .required("Không được để trống phần mô tả!"),
             })}
-            onSubmit={async (values, { setSubmitting }) => {
-                try {
-                    const jwtToken = localStorage.getItem("JWT");
-                    if(jwtToken){
-                        await todoService.createTodo(values,jwtToken);
-                    setSubmitting(false);
-                    Swal.fire({
-                        title: 'Create ' + values.name + ' success',
-                        icon: 'success'
-                    });
-                    navigate('/home');
-                    } 
-                } catch (error) {
-                    Swal.fire({
-                        title: 'Create ' + values.name + ' fail',
-                        icon: "error"
-                    });
-                    setSubmitting(false);
-                }
-            }}>              
-            {({handleSubmit}) => (
-                <form >
-                    <Header/>
+            onSubmit={(value, {setErrors}) => {handleSubmit(value,setErrors)}}
+            >      
+            {({ isSubmitting }) => (        
+                <form>
                     <div className="container mt-5">
                         <div className="row">
                             <div className="col-md-6 offset-md-3">
                                 <div className="mb-3">
                                     <h3 className="d-flex justify-content-center">Create TodoApp</h3>
                                 </div>
+                                
                                 <Form accept="" className="shadow p-4 mb-5">
                                 <div className="mb-3">
                                          <label htmlFor="name">Name Todo</label>
@@ -99,7 +105,7 @@ function CreateTodoApp() {
                                     <div className="mb-3">
                                         <label htmlFor="time">Time</label>
                                         <Field
-                                            type="time"
+                                            type="text"
                                             className="form-control"
                                             name="time"
                                             id="time"
@@ -168,10 +174,9 @@ function CreateTodoApp() {
                                         </Field>
                                     </div>
                                     <div className="mb-5">
-                                        <NavLink to={`/home`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
                                         <button 
-                                            type="button"
-                                            onClick={() => handleSubmit()}
+                                            type="submit"
+                                            onClick={() => isSubmitting()}
                                             className="btn btn-outline-primary col-1 float-end" 
                                             style={{ width: "auto" }}>
                                             Save
@@ -182,7 +187,7 @@ function CreateTodoApp() {
                         </div>
                     </div>
                 </form>
-            )}
+                )}
         </Formik>
     )
 }
