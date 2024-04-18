@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
-import todoService from "../service/TodoService";
+import todoService from "../../service/TodoService";
 import { useEffect,useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from 'yup';
 import Swal from "sweetalert2";
-import * as userService from "../service/UserService"
-import Header from "./Header";
+import * as userService from "../../service/UserService"
+import Header from "../layout/Header";
 function UpdateTodoApp() {
     const [todoApp, setTodoApp] = useState();
     const [typeStatus, setTypeStatus] = useState([]);

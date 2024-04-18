@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import todoService from "../service/TodoService";
+import todoService from "../../service/TodoService";
 import { NavLink, useNavigate } from "react-router-dom";
-import '../css/archive.css';
-import * as userService from "../service/UserService";
+import '../../css/archive.css';
+import * as userService from "../../service/UserService";
 import Swal from "sweetalert2";
-import Header from "./Header";
+import Header from "../layout/Header";
 import { LuArchiveRestore } from "react-icons/lu";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 function Archive() {

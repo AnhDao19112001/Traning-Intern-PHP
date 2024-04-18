@@ -1,6 +1,6 @@
 import { Field, Form, Formik, ErrorMessage } from "formik";
-import "../css/login.css";
-import * as userService from "../service/UserService"
+import "../../css/login.css";
+import * as userService from "../../service/UserService"
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";

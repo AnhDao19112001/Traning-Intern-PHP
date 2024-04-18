@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import * as userService from "../service/UserService"
+import * as userService from "../../service/UserService"
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from 'yup';
 import { Link } from "react-router-dom";
@@ -33,7 +33,7 @@ function Register() {
         <Formik initialValues={{ 
             email: "",
             password: "",
-            passwordConfirmation: ""
+            password_confirmation: ""
          }} 
          validationSchema={yup.object({
             email: yup.string()

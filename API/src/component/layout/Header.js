@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import * as userService from "../service/UserService";
+import * as userService from "../../service/UserService";
 import { NavLink,Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { BiLogOutCircle, BiUserCircle} from "react-icons/bi";

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import todoService from "../service/TodoService";
+import todoService from "../../service/TodoService";
 import { useNavigate, useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import * as userService from "../service/UserService"
-import Header from "./Header";
+import * as userService from "../../service/UserService"
+import Header from "../layout/Header";
 import Swal from "sweetalert2";
 function DetailTodoApp() {
     const [todo, setTodo] = useState({});

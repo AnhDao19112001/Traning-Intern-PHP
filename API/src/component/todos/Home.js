@@ -2,13 +2,13 @@ import { useEffect, useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { CiSearch } from "react-icons/ci";
-import todoService from "../service/TodoService";
-import Header from "./Header";
-import * as userService from "../service/UserService"
+import todoService from "../../service/TodoService";
+import Header from "../layout/Header";
+import * as userService from "../../service/UserService"
 import { BsThreeDots } from "react-icons/bs";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import "../css/search.css";
-import"../css/pagination.css";
+import "../../css/search.css";
+import"../../css/pagination.css";
 import { Formik, Form, Field } from "formik";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Swal from "sweetalert2";

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import todoService from "../service/TodoService";
-import * as userService from "../service/UserService"
+import todoService from "../../service/TodoService";
+import * as userService from "../../service/UserService"
 import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import Header from "./Header";
+import Header from "../layout/Header";
 function Filter() {
     const [typeStatus, setTypeStatus] = useState([]);
     const [fillter, setFillter] = useState([]);
