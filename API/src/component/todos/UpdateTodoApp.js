@@ -6,8 +6,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from 'yup';
 import Swal from "sweetalert2";
 import * as userService from "../../service/UserService"
-import Header from "../layout/Header";
-function UpdateTodoApp() {
+const UpdateTodoApp = ({todo,updateOnTodo}) => {
     const [todoApp, setTodoApp] = useState();
     const [typeStatus, setTypeStatus] = useState([]);
     const navigate = useNavigate();
@@ -28,6 +27,28 @@ function UpdateTodoApp() {
         } 
     }
 
+    const handleSubmit = async (value, {setSubmitting}) => {
+        try {
+            const jwtToken = localStorage.getItem("JWT");
+        if(jwtToken) {
+            await todoService.updateTodo(param.id,value,jwtToken);
+            setSubmitting(false);
+            Swal.fire({
+                title:'Update '+value.name+' success',
+                icon: 'success'
+            });
+            updateOnTodo(param.id,value)
+            todo();
+        }
+        } catch (error) {
+            Swal.fire({
+                title:'Update fail',
+                icon: 'error'
+            });
+            setSubmitting(false)
+        }
+    }
+
     useEffect(() => {
         const jwtToken = localStorage.getItem("JWT");
         if(jwtToken){
@@ -39,7 +60,7 @@ function UpdateTodoApp() {
         }
     }, [param.id]);
 
-    if(!todoApp){
+    if(!todo){
         return null;
     }
 
@@ -69,22 +90,9 @@ function UpdateTodoApp() {
             .required("Không được phép để trống!").max(50,"Không quá 50 ký tự").min(2,"Phải dài hơn 2 ký tự!")
             .matches(/^[0-9+.]+$/,"Không chứa ký tự đặc biệt!")
         })}
-        onSubmit={async (value) => {
-            const jwtToken = localStorage.getItem("JWT");
-            if(jwtToken){
-                await todoService.updateTodo(param.id, value,jwtToken);
-            Swal.fire({
-                title: `Update ${value.name} success`,
-                icon: "success"
-            })
-            navigate(`/home`)}}}
-            >
-            {({handleSubmit, handleChange, values}) => (
-                <form onSubmit={handleSubmit}>
-                    <Header/>
-                    <div className="container mt-5">
-                        <div className="row">
-                            <div className="col-md-6 offset-md-3">
+        onSubmit={handleSubmit}>
+            {({handleChange, values, isSubmitting}) => (
+                <>
                                 <div className="mb-3">
                                     <h3 className="d-flex justify-content-center">Update TodoApp</h3>
                                 </div>
@@ -179,16 +187,13 @@ function UpdateTodoApp() {
                                         </Field>
                                     </div>
                                     <div className="mb-5">
-                                        <NavLink to={`/home`} type="button" className="btn btn-outline-dark float-start">Go Home</NavLink>
-                                        <button type="button" 
-                                        onClick={handleSubmit} 
+                                        <button type="submit"
+                                        disabled={isSubmitting} 
+                                        // onClick={handleSubmit} 
                                         className="btn btn-outline-primary col-1 float-end" style={{width: "auto"}}>Update</button>
                                     </div>
                                 </Form>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                </>
             )}
         </Formik>
     )
